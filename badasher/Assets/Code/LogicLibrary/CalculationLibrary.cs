@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class _EnemySuperclass : MonoBehaviour {
+public class CalculationLibrary : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
