@@ -5,6 +5,18 @@ badasher/[Bb]uild
 badasher/[Ll]ibrary/
 badasher/sysinfo.txt
 badasher/*.stackdump
+badasher/Temp/
+badasher/Obj/
+badasher/Build
+badasher/Library/
+badasher/sysinfo.txt
+badasher/*.stackdump
+Temp/
+Obj/
+Build
+Library/
+sysinfo.txt
+*.stackdump
 
 # Visual Studio generated
 [Ee]xported[Oo]bj/
