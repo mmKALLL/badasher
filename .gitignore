@@ -1,4 +1,16 @@
 # Unity generated
+Temp/
+[Oo]bj/
+Build
+Library/
+sysinfo.txt
+*.stackdump
+*/Temp/
+*/[Oo]bj/
+*/Build
+*/Library/
+*/sysinfo.txt
+*/*.stackdump
 badasher/[Tt]emp/
 badasher/[Oo]bj/
 badasher/[Bb]uild
