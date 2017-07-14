@@ -1,10 +1,10 @@
 # Unity generated
-[Tt]emp/
-[Oo]bj/
-[Bb]uild
-[Ll]ibrary/
-sysinfo.txt
-*.stackdump
+badasher/[Tt]emp/
+badasher/[Oo]bj/
+badasher/[Bb]uild
+badasher/[Ll]ibrary/
+badasher/sysinfo.txt
+badasher/*.stackdump
 
 # Visual Studio generated
 [Ee]xported[Oo]bj/
