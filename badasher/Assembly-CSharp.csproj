@@ -52,6 +52,7 @@
      <Compile Include="Assets\Code\Objects\Enemies\_Enemy.cs" />
      <Compile Include="Assets\Code\Objects\PlayerRelated\Player.cs" />
      <Compile Include="Assets\Code\Objects\PlayerRelated\PlayerCollisions.cs" />
+     <Compile Include="Assets\Code\Objects\PlayerRelated\PlayerConstants.cs" />
      <Compile Include="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs" />
      <Compile Include="Assets\Code\_Gamemanager\GameManager.cs" />
      <Compile Include="Assets\Code\_Gamemanager\InputHandler.cs" />

@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+
+	public void Start(){
 	
-	// Update is called once per frame
-	void Update () {
-		
+	}
+
+	private IEnumerator WaitForDashButton(){
+		while (!Input.GetKey (KeyCode.D)) {
+			break;
+		}
+		yield return null;
 	}
 }

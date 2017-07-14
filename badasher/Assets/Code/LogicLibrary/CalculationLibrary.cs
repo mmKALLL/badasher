@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CalculationLibrary : MonoBehaviour {
+	// Holds methods for jump vs dash distance, dash slowdown vs dash distance
 
-	// Use this for initialization
-	void Start () {
-		
+	public int CalculateDashSlowdown(float dashDistance){
+		return 0;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public int CalculateDashJump(float dashDistance){
+		return 0;
 	}
 }

@@ -8,7 +8,18 @@ public abstract class _Enemy : MonoBehaviour {
 
 	protected int damage;
 
-	public abstract void OnRunThrough (Player player);
-	public abstract void OnDashThrough (Player player);
-	public abstract void OnAirDashThrough (Player player);
+	public void OnRunThrough (Player player){
+
+	}
+	public void OnDashThrough (Player player){
+		
+	}
+	public void OnAirDashThrough (Player player){
+		
+	}
+
+	// default method for colliding with enemy
+	public void DamagePlayerDefault(Player player) {
+		player.TakeDamage (this.damage);
+	}
 }
