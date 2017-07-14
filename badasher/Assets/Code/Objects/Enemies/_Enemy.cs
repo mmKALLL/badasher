@@ -8,14 +8,16 @@ public abstract class _Enemy : MonoBehaviour {
 
 	protected int damage;
 
-	public void OnRunThrough (Player player){
 
+	// override these in childclasses
+	public void OnRunThrough (Player player){
+		DamagePlayerDefault (player);
 	}
 	public void OnDashThrough (Player player){
-		
+		DamagePlayerDefault (player);
 	}
 	public void OnAirDashThrough (Player player){
-		
+		DamagePlayerDefault (player);
 	}
 
 	// default method for colliding with enemy

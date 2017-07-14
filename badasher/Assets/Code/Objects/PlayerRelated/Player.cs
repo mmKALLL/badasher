@@ -11,11 +11,11 @@ public class Player : MonoBehaviour {
 	private int boostPower;
 	private int dashCooldown = 0;
 	private bool airdashAvailable = true;
-	private enum DashState {none, dash, boostPower};
-	private enum AirState {ground, air};
-	private enum LiveState {alive, invunerable, dead};
+	public enum DashState {none, dash, boostPower};
+	public enum AirState {ground, air};
+	public enum LiveState {alive, invunerable, dead};
 	private DashState dashState;
-	private AirState airstate;
+	private AirState airState;
 	private LiveState liveState;
 
 	#region gets
@@ -23,8 +23,21 @@ public class Player : MonoBehaviour {
 		return this.boostPower;
 	}
 
-	public int GetBoostPower(){
+	public int GetDashCooldown(){
 		return this.dashCooldown = 0;
+	}
+
+	public DashState GetDashState(){
+		return this.dashState;
+	}
+
+	public AirState GetAirState(){
+		return this.airState;
+	}
+
+	public LiveState GetLiveState(){
+		return this.liveState
+
 	}
 	#endregion
 
