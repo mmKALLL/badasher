@@ -16,6 +16,5 @@ public static class PlayerConstants {
 	public const float RUN_SPEED = 1.0f;
 
 
-	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in milliseconds
-	public const float
+	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in millisecondsS
 }
