@@ -11,6 +11,11 @@ public class PlayerMovement : MonoBehaviour {
 		// 
 	}
 
+	// terminate dash at correct distance
+	public IEnumerator CountDashDuration(){
+		yield return null;
+	}
+
 	public void PlayerJump (Player player, float yForce, float xForce){
 		
 	}
