@@ -17,4 +17,5 @@ public static class PlayerConstants {
 
 
 	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in milliseconds
+	public const float
 }

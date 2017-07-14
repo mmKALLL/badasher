@@ -24,4 +24,9 @@ public abstract class _Enemy : MonoBehaviour {
 	public void DamagePlayerDefault(Player player) {
 		player.TakeDamage (this.damage);
 	}
+
+
+	public void TakeDamageFromAttack(Player player){
+		Destroy (this);
+	}
 }

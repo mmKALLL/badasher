@@ -9,7 +9,7 @@ public class Player : MonoBehaviour {
 	PlayerMovement playMov;
 
 	private int boostPower;
-	private int dashCooldown = 0;
+	private float dashCooldown;
 	private bool airdashAvailable = true;
 	public enum DashState {none, dash, boostPower};
 	public enum AirState {ground, air};
@@ -23,8 +23,8 @@ public class Player : MonoBehaviour {
 		return this.boostPower;
 	}
 
-	public int GetDashCooldown(){
-		return this.dashCooldown = 0;
+	public float GetDashCooldown(){
+		return this.dashCooldown;
 	}
 
 	public DashState GetDashState(){
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour {
 	}
 
 	public LiveState GetLiveState(){
-		return this.liveState
+		return this.liveState;
 
 	}
 	#endregion
@@ -53,8 +53,13 @@ public class Player : MonoBehaviour {
 
 	public void PlayerDash(){
 		// called to do everything dash related
+		this.dashState = DashState.dash;
 		StartCoroutine(DashCooldownReduce());
-		playMov.PlayerDash ();
+		playMov.PlayerDash (this);
+	}
+
+	public void PlayerBoostPower(){
+		
 	}
 
 	public void GainBoostPower(int gainAmount){
@@ -82,7 +87,7 @@ public class Player : MonoBehaviour {
 
 	private IEnumerator DashCooldownReduce(){
 		dashCooldown -= Time.deltaTime;
-		yield return WaitForEndOfFrame;
+		yield return new WaitForEndOfFrame();
 		if (dashCooldown > 0) {
 			StartCoroutine (DashCooldownReduce ());
 		}
