@@ -8,13 +8,14 @@ badasher/*.stackdump
 badasher/Temp/
 badasher/Obj/
 badasher/Build
-badasher/Library/
+badasher/Library/*
 badasher/sysinfo.txt
 badasher/*.stackdump
 Temp/
 Obj/
 Build
 Library/
+[.]*/Library/*
 sysinfo.txt
 *.stackdump
 
