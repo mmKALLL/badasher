@@ -11,6 +11,10 @@ public static class PlayerConstants {
 	public const float DASH_DISTANCE = 1.0f; // modifier, in distance
 	public const float BOOST_POWER_DISTANCE = 1.5f;
 
+	public const float DASH_SLOWDOWN_PERFECT_PERCENTAGE = 0.15f;
+	public const float DASH_SLOWDOWN_END_PERCENTEGE = 0.1f;
+	public const float DASH_SLOWDOWN_END_MODIFIER = 1.5f;
+
 
 	public const float DASH_SPEED = 4.0f; // modifiers
 	public const float BOOST_POWER_SPEED = 4.5f;

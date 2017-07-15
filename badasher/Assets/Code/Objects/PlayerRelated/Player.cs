@@ -21,7 +21,8 @@ public class Player : MonoBehaviour {
 	private LiveState liveState;
 
 	public float dashDistanceRemaining;
-	private Vector3 dashStartingPos;
+	private Vector3 dir;
+	private float jumpPower;
 
 	#region gets
 	public int GetBoostPower(){
@@ -85,12 +86,13 @@ public class Player : MonoBehaviour {
 		case DashState.dash:
 			switch (airState){
 			case AirState.ground:
-				playMov.PlayerDashUpdate (this, dashStartingPos, playRig, out dashDistanceRemaining);
+				playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining);
 				break;
 			case AirState.air:
 				if (jumpDashing) {
+					playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining);
 				} else {
-					
+					playMov.PlayerFall(this, playRig);
 				}
 				// use method for airdash (needs multipurpose
 				break;
@@ -103,7 +105,7 @@ public class Player : MonoBehaviour {
 			case AirState.air:
 				break;
 			}*/
-			playMov.PlayerBoostUpdate (this, dashStartingPos, playRig, out dashDistanceRemaining);
+			playMov.PlayerBoostUpdate (this, playRig, out dashDistanceRemaining);
 			break;
 		}
 	}
@@ -113,6 +115,13 @@ public class Player : MonoBehaviour {
 	public void PlayerLand(){
 		this.jumpDashing = false;
 		this.airState = AirState.ground;
+	}
+
+	public void PlayerHitRamp(){
+		this.jumpDashing = true;
+		this.airState = AirState.air;
+		this.dashState = DashState.dash;
+		dir = CalculationLibrary.CalculateDashJumpDir (dashDistanceRemaining);
 	}
 
 	public void PlayerDash(){
@@ -127,7 +136,6 @@ public class Player : MonoBehaviour {
 		this.jumpDashing = false;
 		this.dashState = DashState.dash;
 		StartCoroutine(DashCooldownReduce());
-		dashStartingPos = this.transform.position;
 		dashDistanceRemaining = PlayerConstants.DASH_DISTANCE; 	// doesn't actually matter, unless player goes to DashJump on 
 																// the same frame he starts dashing which shouldn't happen anyway
 	}
@@ -136,7 +144,7 @@ public class Player : MonoBehaviour {
 		if (SpendBoostPower()) {
 			this.jumpDashing = false;
 			this.dashState = DashState.boostPower;
-			dashStartingPos = this.transform.position;
+			// calculate dir here
 			dashDistanceRemaining = PlayerConstants.BOOST_POWER_DISTANCE;
 		}
 	}

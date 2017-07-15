@@ -7,12 +7,12 @@ public class PlayerMovement : MonoBehaviour {
 
 
 
-	public void PlayerDashUpdate (Player player, Vector3 startingPos, Rigidbody2D playerRig, out float dashDistanceRemaining){
+	public void PlayerDashUpdate (Player player, Rigidbody2D playerRig, out float dashDistanceRemaining){
 		
 	}
 
 
-	public void PlayerBoostUpdate (Player player, Vector3 startingPos, Rigidbody2D playerRig, out float dashDistanceRemaining){
+	public void PlayerBoostUpdate (Player player, Rigidbody2D playerRig, out float dashDistanceRemaining){
 		
 	}
 		
@@ -37,12 +37,11 @@ public class PlayerMovement : MonoBehaviour {
 		dashDistanceRemaining = player.dashDistanceRemaining-moveAmount;
 	}
 
-	public void PlayerFall(Player player){
-
+	public void PlayerFall(Player player, Rigidbody2D playerRig){
 
 	}
 
-	public void PlayerRun(Player player){
-	
+	public void PlayerRun(Player player, Rigidbody2D playerRig){
+		playerRig.MovePosition (transform.position + Vector3.right * PlayerConstants.RUN_SPEED * Time.fixedDeltaTime);
 	}
 }
