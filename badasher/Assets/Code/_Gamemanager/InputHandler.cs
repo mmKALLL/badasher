@@ -23,7 +23,7 @@ public class InputHandler : MonoBehaviour {
 			yield return WaitForDashButton ();
 			if (Time.realtimeSinceStartup - timeAtLastDash < PlayerConstants.BOOST_POWER_INPUT_BUFFER) {
 				player.PlayerBoostPower ();
-			} else {
+			} else if (Time.realtimeSinceStartup - timeAtLastDash > PlayerConstants.DASH_COOLDOWN) {
 				player.PlayerDash ();
 			}
 			timeAtLastDash = Time.realtimeSinceStartup;

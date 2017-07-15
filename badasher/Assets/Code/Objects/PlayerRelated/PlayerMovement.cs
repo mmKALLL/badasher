@@ -6,17 +6,22 @@ public class PlayerMovement : MonoBehaviour {
 	// Contains methods for dashing, jumping, airdashing and all kinds of movement
 
 
-	public void PlayerDash (Player player){
-		// take player start position and calculate dash distance from that
-		// 
-	}
 
-	// terminate dash at correct distance
-	public IEnumerator CountDashDuration(){
-		yield return null;
-	}
-
-	public void PlayerJump (Player player, float yForce, float xForce){
+	public void PlayerDashUpdate (Player player, Vector3 startingPos, Rigidbody2D playerRig, out float dashDistanceRemaining){
 		
+	}
+
+
+	public void PlayerBoostUpdate (Player player, Vector3 startingPos, Rigidbody2D playerRig, out float dashDistanceRemaining){
+	
+	}
+		
+
+	public void PlayerJump (Player player, Rigidbody2D playerRig, float yForce, float xForce) {
+		
+	}
+
+	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, float xForce, float yForce, out float dashDistanceRemaining){
+	
 	}
 }
