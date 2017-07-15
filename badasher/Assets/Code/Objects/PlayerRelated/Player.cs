@@ -121,9 +121,9 @@ public class Player : MonoBehaviour {
 	}
 	#endregion
 
-	public IEnumerator OnHitSlowdown(){
+	public IEnumerator PlayerPauseMovement(float slowdownLength){
 		stopFixedUpdate = true;
-		yield return new WaitForSeconds(CalculationLibrary.CalculateDashSlowdown(dashDistanceRemaining));
+		yield return new WaitForSeconds(slowdownLength);
 		stopFixedUpdate = false;
 	}
 
@@ -172,9 +172,10 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void PlayerEndDash (){
+	public void PlayerDashEnd (){
 		this.jumpDashing = false;
 		this.dashState = DashState.none;
+		StartCoroutine (PlayerPauseMovement ());
 	}
 	#endregion
 

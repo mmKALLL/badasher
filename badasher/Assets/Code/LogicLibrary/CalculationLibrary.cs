@@ -27,11 +27,14 @@ public static class CalculationLibrary {
 		} else if (distancePercentageLeft < 0) {
 			distancePercentageLeft = 0;
 		}
-		float dirY = distancePercentageLeft * (PlayerConstants.DIRECTION_PERCENTAGE_MAX - (1-PlayerConstants.DIRECTION_PERCENTAGE_MAX));
+		float dirY = distancePercentageLeft *(-1 + 2*PlayerConstants.DIRECTION_PERCENTAGE_MAX) + (1-PlayerConstants.DIRECTION_PERCENTAGE_MAX);
+		float dirX = 1 - dirY;
+		return new Vector3 (dirX, dirY, 0).Normalize();
 
 	}
 
-	public static float CalculateDashJumpPower (float dashDistanceRemaining, bool boostPower){
+	// dir should be received from above function
+	public static float CalculateDashJumpPower (Vector3 dir, bool boostPower){
 		return 10f;
 		// TODO
 	}

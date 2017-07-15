@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void PlayerDashUpdate (Player player, Rigidbody2D playerRig, out float dashDistanceRemaining, bool boostPower){
 		if (player.dashDistanceRemaining <= 0) {
-			player.PlayerEndDash ();
+			player.PlayerDashEnd ();
 			dashDistanceRemaining = 0;
 			return;
 		}
@@ -22,13 +22,13 @@ public class PlayerMovement : MonoBehaviour {
 		
 
 	public void PlayerJump (Player player, Rigidbody2D playerRig, Vector3 vec) { // vec should include direction and power
-		playerRig.AddForce (vec * PlayerConstants.JUMP_POWER);
+		playerRig.AddForce (vec);
 	}
 
 	// calculate jump modifier in calculationLibrary
 	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, Vector3 dir, float jumpPower, out float dashDistanceRemaining, bool boostPower){
 		if (player.dashDistanceRemaining <= 0) {
-			player.PlayerEndDash ();
+			player.PlayerDashEnd ();
 			PlayerJump(player, playerRig, dir*jumpPower);
 			dashDistanceRemaining = 0;
 			return;
