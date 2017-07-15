@@ -22,4 +22,7 @@ public static class PlayerConstants {
 
 
 	public const float ENEMY_BP_DAMAGE = 20; // out of Boost Power Max
+
+
+	public const float POWERUP_BOOST_AMOUNT = 40;
 }

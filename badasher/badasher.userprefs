@@ -1,13 +1,20 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Objects\Enemies\Enemy_Basic.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Objects\PlayerRelated\PlayerCollisions.cs">
     <Files>
-      <File FileName="Assets\Code\Objects\Enemies\_EnemySuperclass.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\Enemies\Enemy_Basic.cs" Line="5" Column="34" />
-      <File FileName="Assets\Code\Objects\Enemies\Enemy_Run.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\ColliderLibrary.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\MovementLibrary.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Objects\Enemies\Enemy_Basic.cs" Line="10" Column="1" />
+      <File FileName="Assets\Code\Objects\Enemies\Enemy_Run.cs" Line="11" Column="3" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\Player.cs" Line="66" Column="3" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerCollisions.cs" Line="41" Column="51" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs" Line="25" Column="39" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerConstants.cs" Line="27" Column="47" />
+      <File FileName="Assets\Code\_Gamemanager\InputHandler.cs" Line="26" Column="10" />
+      <File FileName="Assets\Code\LogicLibrary\CalculationLibrary.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Objects\Enemies\_Enemy.cs" Line="33" Column="27" />
+      <File FileName="Assets\Code\_Gamemanager\MenuManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\_Gamemanager\GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Objects\Powerups\Powerup_Boost.cs" Line="16" Column="27" />
+      <File FileName="Assets\Code\Objects\Powerups\_Powerup.cs" Line="7" Column="48" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

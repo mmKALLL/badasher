@@ -30,6 +30,6 @@ public abstract class _Enemy : MonoBehaviour {
 
 
 	public void TakeDamageFromAttack(Player player){
-		Destroy (this);
+		Destroy (this.gameObject);
 	}
 }
