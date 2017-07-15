@@ -11,13 +11,13 @@ public class PlayerMovement : MonoBehaviour {
 			dashDistanceRemaining = 0;
 			return;
 		}
-		float constDashMod;
-		if (boostPower) {
-			constDashMod = PlayerConstants.BOOST_POWER_SPEED;
-		} else {
-			constDashMod = PlayerConstants.DASH_SPEED;
+		float moveAmount = DetermineConstantDashModifier(boostPower) * Time.fixedDeltaTime;
+		if (moveAmount > player.dashDistanceRemaining) {
+			moveAmount = player.dashDistanceRemaining;
 		}
+		float constDashMod = DetermineConstantDashModifier (boostPower);
 		playerRig.MovePosition (transform.position + Vector3.right * constDashMod * Time.fixedDeltaTime);
+		dashDistanceRemaining = player.dashDistanceRemaining-moveAmount;
 	}
 		
 
@@ -26,19 +26,27 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	// calculate jump modifier in calculationLibrary
-	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, Vector3 dir, float jumpPower, out float dashDistanceRemaining){
+	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, Vector3 dir, float jumpPower, out float dashDistanceRemaining, bool boostPower){
 		if (player.dashDistanceRemaining <= 0) {
 			player.PlayerEndDash ();
 			PlayerJump(player, playerRig, dir*jumpPower);
 			dashDistanceRemaining = 0;
 			return;
 		}
-		float moveAmount = PlayerConstants.DASH_SPEED * Time.fixedDeltaTime;
+		float moveAmount = DetermineConstantDashModifier(boostPower) * Time.fixedDeltaTime;
 		if (moveAmount > player.dashDistanceRemaining) {
 			moveAmount = player.dashDistanceRemaining;
 		}
 		playerRig.MovePosition(transform.position + dir * (moveAmount));
 		dashDistanceRemaining = player.dashDistanceRemaining-moveAmount;
+	}
+
+	private float DetermineConstantDashModifier(bool boostPower){
+		if (boostPower) {
+			return PlayerConstants.BOOST_POWER_SPEED;
+		} else {
+			return PlayerConstants.DASH_SPEED;
+		}
 	}
 
 	public void PlayerFall (Player player, Rigidbody2D playerRig){

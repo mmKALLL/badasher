@@ -89,13 +89,13 @@ public class Player : MonoBehaviour {
 			case DashState.dash:
 				switch (airState) {
 				case AirState.ground:
-					playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining);
+					playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining, false);
 					break;
 				case AirState.air:
 					if (jumpDashing) {
-						playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining);
+						playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining, false);
 					} else {
-						playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining);
+						playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining, false);
 					}
 					break;
 				}
@@ -108,7 +108,7 @@ public class Player : MonoBehaviour {
 				break;
 			}*/
 				if (jumpDashing) {
-					// own method
+					playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining, true);
 				} else {
 					playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining, true);
 				}
@@ -120,7 +120,7 @@ public class Player : MonoBehaviour {
 
 	public IEnumerator OnHitSlowdown(){
 		stopFixedUpdate = true;
-		yield return WaitForSeconds(CalculationLibrary.CalculateDashSlowdown(dashDistanceRemaining));
+		yield return new WaitForSeconds(CalculationLibrary.CalculateDashSlowdown(dashDistanceRemaining));
 		stopFixedUpdate = false;
 	}
 
@@ -133,9 +133,14 @@ public class Player : MonoBehaviour {
 	public void PlayerHitRamp (){
 		this.jumpDashing = true;
 		this.airState = AirState.air;
-		this.dashState = DashState.dash;
 		dir = CalculationLibrary.CalculateDashJumpDir(dashDistanceRemaining);
-		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining);
+		bool boostPowerBool;
+		if (this.dashState == DashState.boostPower) {
+			boostPowerBool = true;
+		} else {
+			boostPowerBool = false;
+		}
+		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining, boostPowerBool);
 		dashDistanceRemaining += PlayerConstants.DASH_DISTANCE * PlayerConstants.JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE;
 	}
 

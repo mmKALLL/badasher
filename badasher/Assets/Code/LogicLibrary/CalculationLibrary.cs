@@ -23,7 +23,7 @@ public static class CalculationLibrary {
 		// TODO
 	}
 
-	public static float CalculateDashJumpPower (float dashDistanceRemaining){
+	public static float CalculateDashJumpPower (float dashDistanceRemaining, bool boostPower){
 		return 10f;
 		// TODO
 	}
