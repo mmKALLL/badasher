@@ -32,7 +32,9 @@ public class PlayerCollisions : MonoBehaviour {
 
 		} else if (other.CompareTag ("Ramp")) {
 			if ((player.GetAirState() == Player.AirState.ground) && (player.GetDashState() != Player.DashState.none)) {
-				playerMov.PlayerJump (player, 0, 0);
+				player.SetJumpDashing (true);
+				player.SetAirState (Player.AirState.air);
+				player.SetDashState (Player.DashState.dash);
 				// calculate using the CalculatingLibrary
 			}
 		} else if (other.CompareTag ("Powerup")) {

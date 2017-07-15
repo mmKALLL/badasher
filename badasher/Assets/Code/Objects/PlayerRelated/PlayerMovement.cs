@@ -22,6 +22,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, float xForce, float yForce, out float dashDistanceRemaining){
-	
+		// goes to jump after dash has ended
 	}
 }

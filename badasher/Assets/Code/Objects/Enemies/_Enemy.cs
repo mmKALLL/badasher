@@ -10,12 +10,15 @@ public abstract class _Enemy : MonoBehaviour {
 
 
 	// override these in childclasses
+	virtual
 	public void OnRunThrough (Player player){
 		DamagePlayerDefault (player);
 	}
+	virtual
 	public void OnDashThrough (Player player){
 		DamagePlayerDefault (player);
 	}
+	virtual
 	public void OnAirDashThrough (Player player){
 		DamagePlayerDefault (player);
 	}

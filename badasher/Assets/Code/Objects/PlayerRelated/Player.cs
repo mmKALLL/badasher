@@ -10,8 +10,9 @@ public class Player : MonoBehaviour {
 	Rigidbody2D playRig;
 
 	private int boostPower;
-	private float dashCooldown;
+	private float dashCooldown; // use this for the UI element
 	private bool airdashAvailable = true;
+	private bool jumpDashing = true;
 	public enum DashState {none, dash, boostPower}; // none = default run. DON'T ADD states that aren't a type of dash here.
 	public enum AirState {ground, air};
 	public enum LiveState {alive, invunerable, dead};
@@ -45,6 +46,18 @@ public class Player : MonoBehaviour {
 	}
 	#endregion
 
+	#region sets
+	public void SetDashState (DashState dash){
+		this.dashState = dash;
+	}
+	public void SetAirState (AirState air){
+		this.airState = air;
+	}
+	public void SetJumpDashing (bool varx){
+		this.jumpDashing = varx;
+	}
+	#endregion
+
 	public void Awake(){
 		dashCooldown = PlayerConstants.DASH_COOLDOWN;
 		playMov = this.GetComponent<PlayerMovement> ();
@@ -75,6 +88,10 @@ public class Player : MonoBehaviour {
 				playMov.PlayerDashUpdate (this, dashStartingPos, playRig, dashDistanceRemaining);
 				break;
 			case AirState.air:
+				if (jumpDashing) {
+				} else {
+					
+				}
 				// use method for airdash (needs multipurpose
 				break;
 			}
@@ -91,6 +108,10 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public void PlayerLand(){
+		this.jumpDashing = false;
+	}
+
 	public void PlayerDash(){
 		// called to do everything dash related
 		if (this.airState == AirState.air) {
@@ -100,6 +121,7 @@ public class Player : MonoBehaviour {
 				return;
 			}
 		}
+		this.jumpDashing = false;
 		this.dashState = DashState.dash;
 		StartCoroutine(DashCooldownReduce());
 		dashStartingPos = this.transform.position;
@@ -108,7 +130,7 @@ public class Player : MonoBehaviour {
 	}
 
 	public void PlayerBoostPower(){
-		if (SpendBoostPower) {
+		if (SpendBoostPower()) {
 			this.dashState = DashState.boostPower;
 			dashStartingPos = this.transform.position;
 			dashDistanceRemaining = PlayerConstants.BOOST_POWER_DISTANCE;
@@ -140,6 +162,7 @@ public class Player : MonoBehaviour {
 	private IEnumerator DashCooldownReduce(){
 		while (dashCooldown > 0) {
 			dashCooldown -= Time.deltaTime;
+			Debug.Log ("DashCD reduced by " + Time.deltaTime);
 			yield return null;
 		}
 		yield return new WaitForEndOfFrame();
