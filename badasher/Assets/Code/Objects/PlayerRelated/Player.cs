@@ -70,7 +70,7 @@ public class Player : MonoBehaviour {
 	}
 
 
-	public void Update(){
+	public void FixedUpdate(){
 		switch (dashState) {
 		case DashState.none: // basic run
 			switch (airState){
@@ -131,6 +131,7 @@ public class Player : MonoBehaviour {
 
 	public void PlayerBoostPower(){
 		if (SpendBoostPower()) {
+			this.jumpDashing = false;
 			this.dashState = DashState.boostPower;
 			dashStartingPos = this.transform.position;
 			dashDistanceRemaining = PlayerConstants.BOOST_POWER_DISTANCE;

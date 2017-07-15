@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-	// Contains methods for dashing, jumping, airdashing and all kinds of movement
+	// Contains methods (for FixedUpdate) for dashing, jumping, airdashing and running
 
 
 
@@ -13,15 +13,44 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	public void PlayerBoostUpdate (Player player, Vector3 startingPos, Rigidbody2D playerRig, out float dashDistanceRemaining){
+		
+	}
+		
+
+	public void PlayerJump (Player player, Rigidbody2D playerRig, Vector3 dir) { // dir should include direction and power, calculated by
+		playerRig.AddForce (dir * PlayerConstants.JUMP_POWER);
+	}
+
+	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, Vector3 dir, out float dashDistanceRemaining){
+		if (dashDistanceRemaining <= 0) {
+			EndDash ();
+			PlayerJump;
+			return;
+		}
+		float moveAmount = PlayerConstants.DASH_SPEED * Time.fixedDeltaTime;
+		if (moveAmount > dashDistanceRemaining) {
+			moveAmount = dashDistanceRemaining;
+		}
+		playerRig.MovePosition(transform.position + dir * (moveAmount));
+		dashDistanceRemaining -= moveAmount;
+	}
+
+	public void PlayerFall(Player player){
+
+
+	}
+
+	public void PlayerRun(Player player){
 	
 	}
-		
 
-	public void PlayerJump (Player player, Rigidbody2D playerRig, float yForce, float xForce) {
-		
+
+
+	public void EndDash(Player player){
+		player.SetDashState = Player.DashState.none;
 	}
 
-	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, float xForce, float yForce, out float dashDistanceRemaining){
-		// goes to jump after dash has ended
+	public void Land(Player player){
+		player.SetAirState = Player.AirState.ground;
 	}
 }
