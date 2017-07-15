@@ -18,9 +18,17 @@ public static class CalculationLibrary {
 		// slowdown is normalized difference?
 	}
 
+	// direction should be normalized
 	public static Vector3 CalculateDashJumpDir (float dashDistanceRemaining){
 		return new Vector3();
-		// TODO
+		float distancePercentageLeft = (PlayerConstants.DASH_DISTANCE - dashDistanceRemaining) / PlayerConstants.DASH_DISTANCE;
+		if (distancePercentageLeft > 100) {
+			distancePercentageLeft = 100;
+		} else if (distancePercentageLeft < 0) {
+			distancePercentageLeft = 0;
+		}
+		float dirY = distancePercentageLeft * (PlayerConstants.DIRECTION_PERCENTAGE_MAX - (1-PlayerConstants.DIRECTION_PERCENTAGE_MAX));
+
 	}
 
 	public static float CalculateDashJumpPower (float dashDistanceRemaining, bool boostPower){

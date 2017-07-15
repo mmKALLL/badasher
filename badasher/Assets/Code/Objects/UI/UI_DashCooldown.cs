@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UI_DashCooldown : MonoBehaviour {
 
+	//TODO
+	// bar that depletes on dash use and fills according to DashCooldown
+
 	// Use this for initialization
 	void Start () {
 		

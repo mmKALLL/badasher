@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UI_BoostPowerBar : MonoBehaviour {
 
+	// TODO
+	// Boostpower bar that updates when boost power is changed
+
 	// Use this for initialization
 	void Start () {
 		
