@@ -19,4 +19,7 @@ public static class PlayerConstants {
 
 
 	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in millisecondsS
+
+
+	public const float ENEMY_BP_DAMAGE = 20; // out of Boost Power Max
 }

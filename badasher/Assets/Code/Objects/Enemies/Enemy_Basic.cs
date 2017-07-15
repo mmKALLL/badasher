@@ -7,6 +7,11 @@ public class Enemy_Basic : _Enemy {
 	// Most basic of movement
 	// Utilizes dash slowdown
 
+	public void Awake(){
+		this.damage = PlayerConstants.ENEMY_BP_DAMAGE;
+	}
+
+
 	override
 	public void OnDashThrough(Player player){
 		TakeDamageFromAttack (player);
