@@ -6,7 +6,7 @@ public class InputHandler : MonoBehaviour {
 
 	private Player player;
 
-	private float timeAtLastDash;
+	//private float timeAtLastDash;
 	private Coroutine waitForInputsStorage;
 
 	public void Start (){
@@ -21,16 +21,14 @@ public class InputHandler : MonoBehaviour {
 	private IEnumerator WaitForDashButtons (){ // main ienumerator
 		while (true){
 			yield return WaitForDashButton();
-			if (Time.realtimeSinceStartup - timeAtLastDash < PlayerConstants.BOOST_POWER_INPUT_BUFFER) {
-				if (player.IsJumpDashing()) {
-					player.PlayerDash ();
-				} else {
-					player.PlayerBoostPower ();
-				}
-			} else {
+			if (player.IsJumpDashing()) {
+				player.PlayerDash ();
+			} else if (player.GetDashState() == Player.DashState.dash) {
+				player.PlayerBoostPower ();
+			} else if(player.GetDashCooldown () <= 0) {
 				player.PlayerDash ();
 			}
-			timeAtLastDash = Time.realtimeSinceStartup;
+			//timeAtLastDash = Time.realtimeSinceStartup;
 		}
 	}
 

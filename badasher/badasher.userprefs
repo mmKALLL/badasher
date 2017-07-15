@@ -1,20 +1,23 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Objects\PlayerRelated\PlayerCollisions.cs">
     <Files>
-      <File FileName="Assets\Code\Objects\Enemies\Enemy_Basic.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\Enemies\Enemy_Run.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\Player.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerCollisions.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs" Line="19" Column="2" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerConstants.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\_Gamemanager\InputHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\LogicLibrary\CalculationLibrary.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\Enemies\_Enemy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\_Gamemanager\MenuManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\_Gamemanager\GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\Powerups\Powerup_Boost.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\Powerups\_Powerup.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Objects\Enemies\Enemy_Basic.cs" Line="10" Column="20" />
+      <File FileName="Assets\Code\Objects\Enemies\Enemy_Run.cs" Line="9" Column="20" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\Player.cs" Line="76" Column="27" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerCollisions.cs" Line="44" Column="21" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs" Line="17" Column="46" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerConstants.cs" Line="23" Column="22" />
+      <File FileName="Assets\Code\_Gamemanager\InputHandler.cs" Line="31" Column="1" />
+      <File FileName="Assets\Code\LogicLibrary\CalculationLibrary.cs" Line="34" Column="53" />
+      <File FileName="Assets\Code\Objects\Enemies\_Enemy.cs" Line="33" Column="37" />
+      <File FileName="Assets\Code\_Gamemanager\MenuManager.cs" Line="7" Column="9" />
+      <File FileName="Assets\Code\_Gamemanager\GameLauncher.cs" Line="5" Column="26" />
+      <File FileName="Assets\Code\Objects\Powerups\Powerup_Boost.cs" Line="14" Column="42" />
+      <File FileName="Assets\Code\Objects\Powerups\_Powerup.cs" Line="7" Column="34" />
+      <File FileName="Assets\Code\Objects\UI\UI_AirDashIndicator.cs" Line="8" Column="55" />
+      <File FileName="Assets\Code\Objects\UI\UI_BoostPowerBar.cs" Line="8" Column="60" />
+      <File FileName="Assets\Code\Objects\UI\UI_DashCooldown.cs" Line="8" Column="62" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -31,7 +31,9 @@ public class PlayerMovement : MonoBehaviour {
 		if (player.dashDistanceRemaining <= 0) {
 			player.PlayerDashEnd ();
 			playerRig.velocity = dir*moveAmount/Time.fixedDeltaTime;
+			playerRig.isKinematic = false;
 			dashDistanceRemaining = 0;
+			Debug.Log ("DASHJUMP END");
 			return;
 		}
 		if (moveAmount > player.dashDistanceRemaining) {
@@ -50,6 +52,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void PlayerFall (Player player, Rigidbody2D playerRig){
+		playerRig.isKinematic = false;
 		// nothing, let the gravity do its work.
 	}
 

@@ -25,6 +25,7 @@ public class Player : MonoBehaviour {
 	private float jumpPower;
 
 	private bool stopFixedUpdate = false;
+	private Coroutine dashCooldownStorage;
 
 	#region gets
 	public int GetBoostPower(){
@@ -66,6 +67,7 @@ public class Player : MonoBehaviour {
 
 	public void Awake(){
 		dashCooldown = PlayerConstants.DASH_COOLDOWN;
+		StartCoroutine (DashCooldownReduce ());
 		playMov = this.GetComponent<PlayerMovement> ();
 		playCol = this.GetComponent<PlayerCollisions> ();
 		playRig = this.GetComponent<Rigidbody2D> ();
@@ -133,6 +135,7 @@ public class Player : MonoBehaviour {
 	public void PlayerLand (){
 		this.jumpDashing = false;
 		this.airState = AirState.ground;
+		this.airdashAvailable = true;
 		playRig.isKinematic = false;
 	}
 
@@ -160,10 +163,11 @@ public class Player : MonoBehaviour {
 			} else {
 				return;
 			}
+		} else {
+			this.dashCooldown = PlayerConstants.DASH_COOLDOWN;
 		}
 		this.jumpDashing = false;
 		this.dashState = DashState.dash;
-		StartCoroutine(DashCooldownReduce());
 		dashDistanceRemaining = PlayerConstants.DASH_DISTANCE; 	// doesn't actually matter, unless player goes to DashJump on 
 																// the same frame he starts dashing which shouldn't happen anyway
 	}
@@ -180,8 +184,14 @@ public class Player : MonoBehaviour {
 
 	public void PlayerDashEnd (){
 		this.jumpDashing = false;
-		this.dashState = DashState.none;
 		StartCoroutine (PlayerPauseMovement (PlayerConstants.DASH_GROUND_END_LAG));
+		if (dashState != DashState.boostPower) {
+			if (dashCooldownStorage != null) {
+				StopCoroutine (dashCooldownStorage);
+			}
+			dashCooldownStorage = StartCoroutine(DashCooldownReduce());
+		}
+		this.dashState = DashState.none;
 	}
 	#endregion
 
@@ -210,7 +220,8 @@ public class Player : MonoBehaviour {
 	}
 
 	public bool SpendBoostPower (){
-		if (boostPower >= PlayerConstants.BOOST_POWER_COST) {
+		if (this.boostPower >= PlayerConstants.BOOST_POWER_COST) {
+			this.boostPower -= PlayerConstants.BOOST_POWER_COST;
 			return true;
 		}
 		return false;
@@ -222,6 +233,7 @@ public class Player : MonoBehaviour {
 			dashCooldown -= Time.deltaTime;
 			yield return null;
 		}
+		Debug.Log (dashCooldown);
 		yield return new WaitForEndOfFrame();
 	}
 }
