@@ -69,7 +69,7 @@ public class Player : MonoBehaviour {
 		boostPower = PlayerConstants.BOOST_POWER_DEFAULT;
 	}
 
-
+	#region fixedUpdate
 	public void FixedUpdate(){
 		switch (dashState) {
 		case DashState.none: // basic run
@@ -107,9 +107,12 @@ public class Player : MonoBehaviour {
 			break;
 		}
 	}
+	#endregion
 
+	#region change states
 	public void PlayerLand(){
 		this.jumpDashing = false;
+		this.airState = AirState.ground;
 	}
 
 	public void PlayerDash(){
@@ -138,6 +141,14 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public void PlayerEndDash(){
+		this.jumpDashing = false;
+		this.dashState = DashState.none;
+	}
+	#endregion
+
+
+	#region interact with variables
 	public void GainBoostPower(int gainAmount){
 		this.boostPower += gainAmount;
 		if (boostPower > PlayerConstants.BOOST_POWER_MAX) {
@@ -158,7 +169,7 @@ public class Player : MonoBehaviour {
 		}
 		return false;
 	}
-
+	#endregion
 
 	private IEnumerator DashCooldownReduce(){
 		while (dashCooldown > 0) {

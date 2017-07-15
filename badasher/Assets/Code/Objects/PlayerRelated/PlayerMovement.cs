@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour {
 	// calculate jump modifier in calculationLibrary
 	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, Vector3 dir, float jumpModifier, out float dashDistanceRemaining){
 		if (player.dashDistanceRemaining <= 0) {
-			EndDash (player);
+			player.PlayerEndDash ();
 			PlayerJump(player, playerRig, dir*jumpModifier);
 			dashDistanceRemaining = 0;
 			return;
@@ -44,15 +44,5 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void PlayerRun(Player player){
 	
-	}
-
-
-
-	public void EndDash(Player player){
-		player.SetDashState() = Player.DashState.none;
-	}
-
-	public void Land(Player player){
-		player.SetAirState() = Player.AirState.ground;
 	}
 }
