@@ -10,7 +10,7 @@ public class InputHandler : MonoBehaviour {
 	private Coroutine waitForInputsStorage;
 
 	public void Start (){
-		// initialize player;
+		player = this.GetComponent<Player> ();
 		waitForInputsStorage = StartCoroutine(WaitForDashButtons());
 	}
 
@@ -22,9 +22,13 @@ public class InputHandler : MonoBehaviour {
 		while (true){
 			yield return WaitForDashButton();
 			if (Time.realtimeSinceStartup - timeAtLastDash < PlayerConstants.BOOST_POWER_INPUT_BUFFER) {
-				player.PlayerBoostPower();
+				if (player.IsJumpDashing()) {
+					player.PlayerDash ();
+				} else {
+					player.PlayerBoostPower ();
+				}
 			} else {
-				player.PlayerDash();
+				player.PlayerDash ();
 			}
 			timeAtLastDash = Time.realtimeSinceStartup;
 		}

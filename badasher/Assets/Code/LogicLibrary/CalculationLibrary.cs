@@ -6,7 +6,7 @@ public static class CalculationLibrary {
 	// Holds methods for jump vs dash distance, dash slowdown vs dash distance
 
 	public static float CalculateDashSlowdown (float dashDistanceRemaining){
-		float slowdown;
+		//float slowdown;
 		float difference = PlayerConstants.DASH_DISTANCE - dashDistanceRemaining;
 		if (difference <= PlayerConstants.DASH_SLOWDOWN_PERFECT_PERCENTAGE * PlayerConstants.DASH_DISTANCE) {
 			return 0; // no slowdown

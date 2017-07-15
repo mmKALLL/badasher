@@ -47,6 +47,9 @@ public class Player : MonoBehaviour {
 		return this.liveState;
 
 	}
+	public bool IsJumpDashing(){
+		return this.jumpDashing;
+	}
 	#endregion
 
 	#region sets
@@ -89,13 +92,13 @@ public class Player : MonoBehaviour {
 			case DashState.dash:
 				switch (airState) {
 				case AirState.ground:
-					playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining, false);
+					playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, false);
 					break;
 				case AirState.air:
 					if (jumpDashing) {
-						playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining, false);
+						playMov.PlayerJumpDash(this, playRig, dir, jumpPower, out dashDistanceRemaining, false);
 					} else {
-						playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining, false);
+						playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, false);
 					}
 					break;
 				}
@@ -108,9 +111,9 @@ public class Player : MonoBehaviour {
 				break;
 			}*/
 				if (jumpDashing) {
-					playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining, true);
+					playMov.PlayerJumpDash(this, playRig, dir, jumpPower, out dashDistanceRemaining, true);
 				} else {
-					playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining, true);
+					playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, true);
 				}
 				break;
 			}
