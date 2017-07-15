@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Code\LogicLibrary\CalculationLibrary.cs" />
+     <Compile Include="Assets\Code\Objects\Enemies\Enemy_Air.cs" />
      <Compile Include="Assets\Code\Objects\Enemies\Enemy_Basic.cs" />
+     <Compile Include="Assets\Code\Objects\Enemies\Enemy_Mine.cs" />
      <Compile Include="Assets\Code\Objects\Enemies\Enemy_Run.cs" />
      <Compile Include="Assets\Code\Objects\Enemies\_Enemy.cs" />
      <Compile Include="Assets\Code\Objects\PlayerRelated\Player.cs" />
@@ -59,6 +61,7 @@
      <Compile Include="Assets\Code\Objects\UI\UI_AirDashIndicator.cs" />
      <Compile Include="Assets\Code\Objects\UI\UI_BoostPowerBar.cs" />
      <Compile Include="Assets\Code\Objects\UI\UI_DashCooldown.cs" />
+     <Compile Include="Assets\Code\_Gamemanager\CameraScript.cs" />
      <Compile Include="Assets\Code\_Gamemanager\GameLauncher.cs" />
      <Compile Include="Assets\Code\_Gamemanager\InputHandler.cs" />
      <Compile Include="Assets\Code\_Gamemanager\MenuManager.cs" />
