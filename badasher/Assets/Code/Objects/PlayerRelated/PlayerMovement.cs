@@ -17,8 +17,8 @@ public class PlayerMovement : MonoBehaviour {
 	}
 		
 
-	public void PlayerJump (Player player, Rigidbody2D playerRig, Vector3 dir) { // dir should include direction and power, calculated by
-		playerRig.AddForce (dir * PlayerConstants.JUMP_POWER);
+	public void PlayerJump (Player player, Rigidbody2D playerRig, Vector3 vec) { // vec should include direction and power
+		playerRig.AddForce (vec * PlayerConstants.JUMP_POWER);
 	}
 
 	// calculate jump modifier in calculationLibrary

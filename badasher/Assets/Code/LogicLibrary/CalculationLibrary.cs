@@ -20,9 +20,11 @@ public static class CalculationLibrary {
 
 	public static Vector3 CalculateDashJumpDir (float dashDistanceRemaining){
 		return new Vector3();
+		// TODO
 	}
 
 	public static float CalculateDashJumpPower (float dashDistanceRemaining){
 		return 10f;
+		// TODO
 	}
 }

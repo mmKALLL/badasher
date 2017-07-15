@@ -6,6 +6,6 @@ public class GameManager : MonoBehaviour {
 
 	// boots up the stuff
 	void Start () {
-		
+		// TODO
 	}
 }

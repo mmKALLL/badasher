@@ -121,7 +121,8 @@ public class Player : MonoBehaviour {
 		this.jumpDashing = true;
 		this.airState = AirState.air;
 		this.dashState = DashState.dash;
-		dir = CalculationLibrary.CalculateDashJumpDir (dashDistanceRemaining);
+		dir = CalculationLibrary.CalculateDashJumpDir(dashDistanceRemaining);
+		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining);
 	}
 
 	public void PlayerDash (){
