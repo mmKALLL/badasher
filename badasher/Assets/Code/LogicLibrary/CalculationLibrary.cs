@@ -30,7 +30,6 @@ public static class CalculationLibrary {
 		float dirY = distancePercentageLeft *(-1 + 2*PlayerConstants.DIRECTION_PERCENTAGE_MAX) + (1-PlayerConstants.DIRECTION_PERCENTAGE_MAX);
 		float dirX = 1 - dirY;
 		return new Vector3 (dirX, dirY, 0).Normalize();
-
 	}
 
 	// dir should be received from above function

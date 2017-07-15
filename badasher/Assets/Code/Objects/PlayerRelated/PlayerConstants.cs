@@ -33,6 +33,5 @@ public static class PlayerConstants {
 
 	public const int POWERUP_BOOST_AMOUNT = 40;
 
-
 	public const float DIRECTION_PERCENTAGE_MAX = 80;
 }
