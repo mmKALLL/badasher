@@ -81,6 +81,7 @@ public class Player : MonoBehaviour {
 	#region fixedUpdate
 	public void FixedUpdate(){
 		//Debug.Log (dashState + " + " + airState);
+		Debug.Log(dashDistanceRemaining);
 		if (!stopFixedUpdate) {
 			switch (dashState) {
 			case DashState.none: // basic run
@@ -159,8 +160,10 @@ public class Player : MonoBehaviour {
 		Debug.Log("DASH!");
 		if (this.airState == AirState.air) {
 			if (airdashAvailable == true) {
+				Debug.Log ("AIRDASH!");
 				airdashAvailable = false;
 			} else {
+				Debug.Log ("No airdash available!");
 				return;
 			}
 		} else {
@@ -175,6 +178,7 @@ public class Player : MonoBehaviour {
 	public void PlayerBoostPower (){
 		if (SpendBoostPower()) {
 			Debug.Log ("BoostPowerDash");
+			this.dashCooldown = 0;
 			this.jumpDashing = false;
 			this.dashState = DashState.boostPower;
 			// calculate dir here

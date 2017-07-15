@@ -21,12 +21,16 @@ public class InputHandler : MonoBehaviour {
 	private IEnumerator WaitForDashButtons (){ // main ienumerator
 		while (true){
 			yield return WaitForDashButton();
-			if (player.IsJumpDashing()) {
+			if (player.IsJumpDashing ()) { // cancel jumpDash into AirDash
 				player.PlayerDash ();
-			} else if (player.GetDashState() == Player.DashState.dash) {
+			} else if (player.GetAirState() == Player.AirState.air) { // cancel falling into AirDash
+				player.PlayerDash ();
+			} else if (player.GetDashState () == Player.DashState.dash) { // cancel dash to PowerBoost
 				player.PlayerBoostPower ();
-			} else if(player.GetDashCooldown () <= 0) {
+			} else if (player.GetDashCooldown () <= 0 && (player.GetDashState () != Player.DashState.boostPower)) { // do dash when no cooldown left and not in boostPower
 				player.PlayerDash ();
+			} else {
+				Debug.Log ("Cannot dash in BoostPower!");
 			}
 			//timeAtLastDash = Time.realtimeSinceStartup;
 		}

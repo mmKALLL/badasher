@@ -6,13 +6,16 @@ public class PlayerMovement : MonoBehaviour {
 	// Contains methods (for FixedUpdate) for dashing, jumping, airdashing and running
 
 	public void PlayerDashUpdate (Player player, Rigidbody2D playerRig, out float dashDistanceRemaining, bool boostPower){
+		float moveAmount = DetermineConstantDashModifier(boostPower) * Time.fixedDeltaTime;
 		if (player.dashDistanceRemaining <= 0) {
 			player.PlayerDashEnd ();
 			Debug.Log ("Dash end");
 			dashDistanceRemaining = 0;
+			if (player.GetAirState () == Player.AirState.air) {
+				playerRig.velocity = Vector3.right*moveAmount/Time.fixedDeltaTime/PlayerConstants.JUMP_DASH_AFTER_MOMENTUM_MODIFIER;
+			}
 			return;
 		}
-		float moveAmount = DetermineConstantDashModifier(boostPower) * Time.fixedDeltaTime;
 		if (moveAmount > player.dashDistanceRemaining) {
 			moveAmount = player.dashDistanceRemaining;
 		}
@@ -21,16 +24,17 @@ public class PlayerMovement : MonoBehaviour {
 	}
 		
 
-	/*public void PlayerJump (Player player, Rigidbody2D playerRig, Vector3 vec) { // vec should include direction and power
+	public void PlayerContinue (Player player, Rigidbody2D playerRig, Vector3 vec) { // vec should include direction and power
 		playerRig.velocity = vec;
-	}*/
+	}
 
 	// calculate jump modifier in calculationLibrary
 	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, Vector3 dir, float jumpPower, out float dashDistanceRemaining, bool boostPower){
 		float moveAmount = DetermineConstantDashModifier(boostPower) * jumpPower * Time.fixedDeltaTime;
+		playerRig.velocity = dir*moveAmount/Time.fixedDeltaTime/1.6f;
 		if (player.dashDistanceRemaining <= 0) {
 			player.PlayerDashEnd ();
-			playerRig.velocity = dir*moveAmount/Time.fixedDeltaTime;
+			playerRig.velocity = dir*moveAmount/Time.fixedDeltaTime/PlayerConstants.JUMP_DASH_AFTER_MOMENTUM_MODIFIER;
 			playerRig.isKinematic = false;
 			dashDistanceRemaining = 0;
 			Debug.Log ("DASHJUMP END");
