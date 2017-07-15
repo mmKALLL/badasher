@@ -38,6 +38,7 @@ public class InputHandler : MonoBehaviour {
 		while (!Input.GetKeyDown (KeyCode.D)) {
 			yield return null;
 		}
+		Debug.Log ("KEY GOT!");
 		yield return new WaitForFixedUpdate ();
 	}
 }

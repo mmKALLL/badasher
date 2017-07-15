@@ -73,10 +73,12 @@ public class Player : MonoBehaviour {
 
 	public void Start(){
 		boostPower = PlayerConstants.BOOST_POWER_DEFAULT;
+		airState = AirState.air;
 	}
 
 	#region fixedUpdate
 	public void FixedUpdate(){
+		//Debug.Log (dashState + " + " + airState);
 		if (!stopFixedUpdate) {
 			switch (dashState) {
 			case DashState.none: // basic run
@@ -131,6 +133,7 @@ public class Player : MonoBehaviour {
 	public void PlayerLand (){
 		this.jumpDashing = false;
 		this.airState = AirState.ground;
+		playRig.isKinematic = false;
 	}
 
 	public void PlayerHitRamp (){
@@ -143,12 +146,14 @@ public class Player : MonoBehaviour {
 		} else {
 			boostPowerBool = false;
 		}
+		playRig.isKinematic = true;
 		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining, boostPowerBool);
 		dashDistanceRemaining += PlayerConstants.DASH_DISTANCE * PlayerConstants.JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE;
 	}
 
 	public void PlayerDash (){
 		// called to do everything dash related
+		Debug.Log("DASH!");
 		if (this.airState == AirState.air) {
 			if (airdashAvailable == true) {
 				airdashAvailable = false;
@@ -165,6 +170,7 @@ public class Player : MonoBehaviour {
 
 	public void PlayerBoostPower (){
 		if (SpendBoostPower()) {
+			Debug.Log ("BoostPowerDash");
 			this.jumpDashing = false;
 			this.dashState = DashState.boostPower;
 			// calculate dir here
@@ -175,7 +181,7 @@ public class Player : MonoBehaviour {
 	public void PlayerDashEnd (){
 		this.jumpDashing = false;
 		this.dashState = DashState.none;
-		StartCoroutine (PlayerPauseMovement ());
+		StartCoroutine (PlayerPauseMovement (PlayerConstants.DASH_GROUND_END_LAG));
 	}
 	#endregion
 
@@ -214,7 +220,6 @@ public class Player : MonoBehaviour {
 	private IEnumerator DashCooldownReduce (){
 		while (dashCooldown > 0) {
 			dashCooldown -= Time.deltaTime;
-			Debug.Log ("DashCD reduced by " + Time.deltaTime);
 			yield return null;
 		}
 		yield return new WaitForEndOfFrame();

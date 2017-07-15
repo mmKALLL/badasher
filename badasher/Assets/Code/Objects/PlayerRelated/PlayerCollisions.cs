@@ -15,6 +15,7 @@ public class PlayerCollisions : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter2D (Collider2D other) {
+		Debug.Log ("COLLISION WITH " + other.name);
 		if (player.GetLiveState () == Player.LiveState.dead) {
 			
 		} else if (other.CompareTag ("Enemy")) {
@@ -36,7 +37,11 @@ public class PlayerCollisions : MonoBehaviour {
 			}
 		} else if (other.CompareTag ("Powerup")) {
 			other.GetComponent<_Powerup> ().GainPowerup (player);
-		} else if (other.CompareTag ("Ground") && player.GetAirState () == Player.AirState.air) {
+		}
+	}
+
+	public void OnCollisionEnter2D (Collision2D other){
+		if (other.collider.CompareTag ("Ground") && player.GetAirState () == Player.AirState.air) {
 			player.PlayerLand ();
 		}
 	}

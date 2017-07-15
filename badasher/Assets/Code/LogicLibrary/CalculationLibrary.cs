@@ -20,21 +20,18 @@ public static class CalculationLibrary {
 
 	// direction should be normalized
 	public static Vector3 CalculateDashJumpDir (float dashDistanceRemaining){
-		return new Vector3();
 		float distancePercentageLeft = (PlayerConstants.DASH_DISTANCE - dashDistanceRemaining) / PlayerConstants.DASH_DISTANCE;
-		if (distancePercentageLeft > 100) {
-			distancePercentageLeft = 100;
-		} else if (distancePercentageLeft < 0) {
-			distancePercentageLeft = 0;
-		}
+		distancePercentageLeft = Mathf.Max (Mathf.Min (1, distancePercentageLeft), 0);
 		float dirY = distancePercentageLeft *(-1 + 2*PlayerConstants.DIRECTION_PERCENTAGE_MAX) + (1-PlayerConstants.DIRECTION_PERCENTAGE_MAX);
 		float dirX = 1 - dirY;
-		return new Vector3 (dirX, dirY, 0).Normalize();
+		return new Vector3 (dirX, dirY, 0).normalized;
 	}
 
 	// dir should be received from above function
-	public static float CalculateDashJumpPower (Vector3 dir, bool boostPower){
-		return 10f;
-		// TODO
+	public static float CalculateDashJumpPower (float dashDistanceRemaining, bool boostPower){
+		float distancePercentageLeft = (PlayerConstants.DASH_DISTANCE - dashDistanceRemaining) / PlayerConstants.DASH_DISTANCE;
+		distancePercentageLeft = Mathf.Max (Mathf.Min (1, distancePercentageLeft), 0);
+		float power = distancePercentageLeft * 0.9f + 1.1f;
+		return power;
 	}
 }

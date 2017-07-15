@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour {
 	public void PlayerDashUpdate (Player player, Rigidbody2D playerRig, out float dashDistanceRemaining, bool boostPower){
 		if (player.dashDistanceRemaining <= 0) {
 			player.PlayerDashEnd ();
+			Debug.Log ("Dash end");
 			dashDistanceRemaining = 0;
 			return;
 		}
@@ -15,8 +16,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (moveAmount > player.dashDistanceRemaining) {
 			moveAmount = player.dashDistanceRemaining;
 		}
-		float constDashMod = DetermineConstantDashModifier (boostPower);
-		playerRig.MovePosition (transform.position + Vector3.right * constDashMod);
+		playerRig.MovePosition (transform.position + Vector3.right * moveAmount);
 		dashDistanceRemaining = player.dashDistanceRemaining-moveAmount;
 	}
 		
