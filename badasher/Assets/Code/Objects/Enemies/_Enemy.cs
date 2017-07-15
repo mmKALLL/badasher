@@ -30,6 +30,8 @@ public abstract class _Enemy : MonoBehaviour {
 
 
 	public void TakeDamageFromAttack (Player player){
+		// TODO sound and/or death effects
+		player.PlayerPauseMovement (CalculationLibrary.CalculateDashSlowdown(player.dashDistanceRemaining));
 		Destroy(this.gameObject);
 	}
 }

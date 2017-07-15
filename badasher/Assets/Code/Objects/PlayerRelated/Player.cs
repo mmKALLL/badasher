@@ -24,6 +24,8 @@ public class Player : MonoBehaviour {
 	private Vector3 dir;
 	private float jumpPower;
 
+	private bool stopFixedUpdate = false;
+
 	#region gets
 	public int GetBoostPower(){
 		return this.boostPower;
@@ -44,6 +46,9 @@ public class Player : MonoBehaviour {
 	public LiveState GetLiveState(){
 		return this.liveState;
 
+	}
+	public bool IsJumpDashing(){
+		return this.jumpDashing;
 	}
 	#endregion
 
@@ -72,44 +77,55 @@ public class Player : MonoBehaviour {
 
 	#region fixedUpdate
 	public void FixedUpdate(){
-		switch (dashState) {
-		case DashState.none: // basic run
-			switch (airState) {
-			case AirState.ground:
-				// use method for moving forward
-				break;
-			case AirState.air:
-				// use method for falling down
-				break;
-			}
-			break;
-		case DashState.dash:
-			switch (airState) {
-			case AirState.ground:
-				playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining);
-				break;
-			case AirState.air:
-				if (jumpDashing) {
-					playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining);
-				} else {
-					playMov.PlayerFall(this, playRig);
+		if (!stopFixedUpdate) {
+			switch (dashState) {
+			case DashState.none: // basic run
+				switch (airState) {
+				case AirState.ground:
+					playMov.PlayerRun (this, playRig);
+					break;
+				case AirState.air:
+					playMov.PlayerFall (this, playRig);
+					break;
 				}
-				// use method for airdash (needs multipurpose
 				break;
-			}
-			break;
-		case DashState.boostPower:
+			case DashState.dash:
+				switch (airState) {
+				case AirState.ground:
+					playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, false);
+					break;
+				case AirState.air:
+					if (jumpDashing) {
+						playMov.PlayerJumpDash(this, playRig, dir, jumpPower, out dashDistanceRemaining, false);
+					} else {
+						playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, false);
+					}
+					break;
+				}
+				break;
+			case DashState.boostPower:
 			/*switch (airState) {
 			case AirState.ground:
 				break;
 			case AirState.air:
 				break;
 			}*/
-			playMov.PlayerBoostUpdate (this, playRig, out dashDistanceRemaining);
-			break;
+				if (jumpDashing) {
+					playMov.PlayerJumpDash(this, playRig, dir, jumpPower, out dashDistanceRemaining, true);
+				} else {
+					playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, true);
+				}
+				break;
+			}
 		}
 	}
 	#endregion
+
+	public IEnumerator PlayerPauseMovement(float slowdownLength){
+		stopFixedUpdate = true;
+		yield return new WaitForSeconds(slowdownLength);
+		stopFixedUpdate = false;
+	}
 
 	#region change states
 	public void PlayerLand (){
@@ -120,9 +136,15 @@ public class Player : MonoBehaviour {
 	public void PlayerHitRamp (){
 		this.jumpDashing = true;
 		this.airState = AirState.air;
-		this.dashState = DashState.dash;
 		dir = CalculationLibrary.CalculateDashJumpDir(dashDistanceRemaining);
-		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining);
+		bool boostPowerBool;
+		if (this.dashState == DashState.boostPower) {
+			boostPowerBool = true;
+		} else {
+			boostPowerBool = false;
+		}
+		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining, boostPowerBool);
+		dashDistanceRemaining += PlayerConstants.DASH_DISTANCE * PlayerConstants.JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE;
 	}
 
 	public void PlayerDash (){
@@ -150,9 +172,10 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void PlayerEndDash (){
+	public void PlayerDashEnd (){
 		this.jumpDashing = false;
 		this.dashState = DashState.none;
+		StartCoroutine (PlayerPauseMovement ());
 	}
 	#endregion
 
