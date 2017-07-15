@@ -7,7 +7,7 @@ public static class PlayerConstants {
 	public const int BOOST_POWER_COST = 30;
 	public const int BOOST_POWER_DEFAULT = 50;
 
-	public const float DASH_COOLDOWN = 0.5f; // in milliseconds
+	public const float DASH_COOLDOWN = 0.5f; // in seconds
 	public const float DASH_DISTANCE = 1.0f; // modifier, in distance
 	public const float BOOST_POWER_DISTANCE = 1.5f;
 
@@ -22,10 +22,11 @@ public static class PlayerConstants {
 	public const float JUMP_POWER = 10; // modifier
 
 
-	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in millisecondsS
+	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in seconds
 
 
 	public const int ENEMY_BP_DAMAGE = 20; // out of Boost Power Max
+	public const float DAMAGE_INVUNERABILITY_TIME = 0.3f; // in seconds
 
 
 	public const int POWERUP_BOOST_AMOUNT = 40;

@@ -74,7 +74,7 @@ public class Player : MonoBehaviour {
 	public void FixedUpdate(){
 		switch (dashState) {
 		case DashState.none: // basic run
-			switch (airState){
+			switch (airState) {
 			case AirState.ground:
 				// use method for moving forward
 				break;
@@ -84,7 +84,7 @@ public class Player : MonoBehaviour {
 			}
 			break;
 		case DashState.dash:
-			switch (airState){
+			switch (airState) {
 			case AirState.ground:
 				playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining);
 				break;
@@ -112,19 +112,19 @@ public class Player : MonoBehaviour {
 	#endregion
 
 	#region change states
-	public void PlayerLand(){
+	public void PlayerLand (){
 		this.jumpDashing = false;
 		this.airState = AirState.ground;
 	}
 
-	public void PlayerHitRamp(){
+	public void PlayerHitRamp (){
 		this.jumpDashing = true;
 		this.airState = AirState.air;
 		this.dashState = DashState.dash;
 		dir = CalculationLibrary.CalculateDashJumpDir (dashDistanceRemaining);
 	}
 
-	public void PlayerDash(){
+	public void PlayerDash (){
 		// called to do everything dash related
 		if (this.airState == AirState.air) {
 			if (airdashAvailable == true) {
@@ -140,7 +140,7 @@ public class Player : MonoBehaviour {
 																// the same frame he starts dashing which shouldn't happen anyway
 	}
 
-	public void PlayerBoostPower(){
+	public void PlayerBoostPower (){
 		if (SpendBoostPower()) {
 			this.jumpDashing = false;
 			this.dashState = DashState.boostPower;
@@ -149,7 +149,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void PlayerEndDash(){
+	public void PlayerEndDash (){
 		this.jumpDashing = false;
 		this.dashState = DashState.none;
 	}
@@ -157,21 +157,29 @@ public class Player : MonoBehaviour {
 
 
 	#region interact with variables
-	public void GainBoostPower(int gainAmount){
+	public void GainBoostPower (int gainAmount){
 		this.boostPower += gainAmount;
 		if (boostPower > PlayerConstants.BOOST_POWER_MAX) {
 			boostPower = PlayerConstants.BOOST_POWER_MAX;
 		}
 	}
 
-	public void TakeDamage(int damageAmount){
-		boostPower -= damageAmount;
-		if (boostPower < 0) {
-			this.liveState = LiveState.dead;
+	public void TakeDamage (int damageAmount){
+		if (this.liveState != LiveState.invunerable) {
+			boostPower -= damageAmount;
+			if (boostPower < 0) {
+				this.liveState = LiveState.dead;
+			}
 		}
 	}
 
-	public bool SpendBoostPower(){
+	private IEnumerator DamageInvunerability (){
+		this.liveState = LiveState.invunerable;
+		yield return new WaitForSeconds (PlayerConstants.DAMAGE_INVUNERABILITY_TIME);
+		this.liveState = LiveState.alive;
+	}
+
+	public bool SpendBoostPower (){
 		if (boostPower >= PlayerConstants.BOOST_POWER_COST) {
 			return true;
 		}
@@ -179,7 +187,7 @@ public class Player : MonoBehaviour {
 	}
 	#endregion
 
-	private IEnumerator DashCooldownReduce(){
+	private IEnumerator DashCooldownReduce (){
 		while (dashCooldown > 0) {
 			dashCooldown -= Time.deltaTime;
 			Debug.Log ("DashCD reduced by " + Time.deltaTime);

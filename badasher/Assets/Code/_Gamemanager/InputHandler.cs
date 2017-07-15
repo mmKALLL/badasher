@@ -9,28 +9,28 @@ public class InputHandler : MonoBehaviour {
 	private float timeAtLastDash;
 	private Coroutine waitForInputsStorage;
 
-	public void Start(){
+	public void Start (){
 		// initialize player;
 		waitForInputsStorage = StartCoroutine(WaitForDashButtons());
 	}
 
-	public void EndThis(){
+	public void EndThis (){
 		StopAllCoroutines ();
 	}
 
 	private IEnumerator WaitForDashButtons (){ // main ienumerator
 		while (true){
-			yield return WaitForDashButton ();
+			yield return WaitForDashButton();
 			if (Time.realtimeSinceStartup - timeAtLastDash < PlayerConstants.BOOST_POWER_INPUT_BUFFER) {
-				player.PlayerBoostPower ();
+				player.PlayerBoostPower();
 			} else {
-				player.PlayerDash ();
+				player.PlayerDash();
 			}
 			timeAtLastDash = Time.realtimeSinceStartup;
 		}
 	}
 
-	private IEnumerator WaitForDashButton(){
+	private IEnumerator WaitForDashButton (){
 		while (!Input.GetKeyDown (KeyCode.D)) {
 			yield return null;
 		}

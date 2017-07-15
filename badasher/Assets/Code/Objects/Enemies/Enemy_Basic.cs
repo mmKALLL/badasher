@@ -13,7 +13,7 @@ public class Enemy_Basic : _Enemy {
 
 
 	override
-	public void OnDashThrough(Player player){
-		TakeDamageFromAttack (player);
+	public void OnDashThrough (Player player){
+		TakeDamageFromAttack(player);
 	}
 }

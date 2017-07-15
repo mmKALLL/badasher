@@ -12,24 +12,24 @@ public abstract class _Enemy : MonoBehaviour {
 	// override these in childclasses
 	virtual
 	public void OnRunThrough (Player player){
-		DamagePlayerDefault (player);
+		DamagePlayerDefault(player);
 	}
 	virtual
 	public void OnDashThrough (Player player){
-		DamagePlayerDefault (player);
+		DamagePlayerDefault(player);
 	}
 	virtual
 	public void OnAirDashThrough (Player player){
-		DamagePlayerDefault (player);
+		DamagePlayerDefault(player);
 	}
 
 	// default method for colliding with enemy
-	public void DamagePlayerDefault(Player player) {
-		player.TakeDamage (this.damage);
+	public void DamagePlayerDefault (Player player) {
+		player.TakeDamage(this.damage);
 	}
 
 
-	public void TakeDamageFromAttack(Player player){
-		Destroy (this.gameObject);
+	public void TakeDamageFromAttack (Player player){
+		Destroy(this.gameObject);
 	}
 }
