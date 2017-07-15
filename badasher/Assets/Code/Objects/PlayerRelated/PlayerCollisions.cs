@@ -38,7 +38,7 @@ public class PlayerCollisions : MonoBehaviour {
 				// calculate using the CalculatingLibrary
 			}
 		} else if (other.CompareTag ("Powerup")) {
-			other.GetComponent<_Powerup> ().GainPowerup ();
+			other.GetComponent<_Powerup> ().GainPowerup (player);
 		}
 	}
 }

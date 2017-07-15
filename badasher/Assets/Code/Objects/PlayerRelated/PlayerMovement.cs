@@ -21,18 +21,20 @@ public class PlayerMovement : MonoBehaviour {
 		playerRig.AddForce (dir * PlayerConstants.JUMP_POWER);
 	}
 
-	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, Vector3 dir, out float dashDistanceRemaining){
-		if (dashDistanceRemaining <= 0) {
-			EndDash ();
-			PlayerJump;
+	// calculate jump modifier in calculationLibrary
+	public void PlayerJumpDash (Player player, Rigidbody2D playerRig, Vector3 dir, float jumpModifier, out float dashDistanceRemaining){
+		if (player.dashDistanceRemaining <= 0) {
+			EndDash (player);
+			PlayerJump(player, playerRig, dir*jumpModifier);
+			dashDistanceRemaining = 0;
 			return;
 		}
 		float moveAmount = PlayerConstants.DASH_SPEED * Time.fixedDeltaTime;
-		if (moveAmount > dashDistanceRemaining) {
-			moveAmount = dashDistanceRemaining;
+		if (moveAmount > player.dashDistanceRemaining) {
+			moveAmount = player.dashDistanceRemaining;
 		}
 		playerRig.MovePosition(transform.position + dir * (moveAmount));
-		dashDistanceRemaining -= moveAmount;
+		dashDistanceRemaining = player.dashDistanceRemaining-moveAmount;
 	}
 
 	public void PlayerFall(Player player){
@@ -47,10 +49,10 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	public void EndDash(Player player){
-		player.SetDashState = Player.DashState.none;
+		player.SetDashState() = Player.DashState.none;
 	}
 
 	public void Land(Player player){
-		player.SetAirState = Player.AirState.ground;
+		player.SetAirState() = Player.AirState.ground;
 	}
 }

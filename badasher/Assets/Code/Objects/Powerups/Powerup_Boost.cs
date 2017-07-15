@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Powerup_Boost : MonoBehaviour {
+public class Powerup_Boost : _Powerup {
 
 	private int boostAmount;
 
@@ -11,7 +11,7 @@ public class Powerup_Boost : MonoBehaviour {
 	}
 
 	override
-	public void GetPowerup(Player player){
+	public void GainPowerup(Player player){
 		player.GainBoostPower (boostAmount);
 		Destroy (this.gameObject);
 	}

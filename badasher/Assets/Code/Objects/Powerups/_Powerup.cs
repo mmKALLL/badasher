@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class _Powerup : MonoBehaviour {
 
-	public abstract void GetPowerup (Player player);
+	public abstract void GainPowerup (Player player);
 }

@@ -85,7 +85,7 @@ public class Player : MonoBehaviour {
 		case DashState.dash:
 			switch (airState){
 			case AirState.ground:
-				playMov.PlayerDashUpdate (this, dashStartingPos, playRig, dashDistanceRemaining);
+				playMov.PlayerDashUpdate (this, dashStartingPos, playRig, out dashDistanceRemaining);
 				break;
 			case AirState.air:
 				if (jumpDashing) {
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour {
 			case AirState.air:
 				break;
 			}*/
-			playMov.PlayerBoostUpdate (this, dashStartingPos, playRig, dashDistanceRemaining);
+			playMov.PlayerBoostUpdate (this, dashStartingPos, playRig, out dashDistanceRemaining);
 			break;
 		}
 	}
@@ -148,7 +148,7 @@ public class Player : MonoBehaviour {
 	public void TakeDamage(int damageAmount){
 		boostPower -= damageAmount;
 		if (boostPower < 0) {
-			this.liveState == LiveState.dead;
+			this.liveState = LiveState.dead;
 		}
 	}
 
