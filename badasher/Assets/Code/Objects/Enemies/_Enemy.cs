@@ -30,6 +30,7 @@ public abstract class _Enemy : MonoBehaviour {
 
 
 	public void TakeDamageFromAttack (Player player){
+		player.OnHitSlowdown ();
 		Destroy(this.gameObject);
 	}
 }

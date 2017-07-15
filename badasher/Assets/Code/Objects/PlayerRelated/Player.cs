@@ -24,6 +24,8 @@ public class Player : MonoBehaviour {
 	private Vector3 dir;
 	private float jumpPower;
 
+	private bool stopFixedUpdate = false;
+
 	#region gets
 	public int GetBoostPower(){
 		return this.boostPower;
@@ -72,44 +74,55 @@ public class Player : MonoBehaviour {
 
 	#region fixedUpdate
 	public void FixedUpdate(){
-		switch (dashState) {
-		case DashState.none: // basic run
-			switch (airState) {
-			case AirState.ground:
-				// use method for moving forward
-				break;
-			case AirState.air:
-				// use method for falling down
-				break;
-			}
-			break;
-		case DashState.dash:
-			switch (airState) {
-			case AirState.ground:
-				playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining);
-				break;
-			case AirState.air:
-				if (jumpDashing) {
-					playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining);
-				} else {
-					playMov.PlayerFall(this, playRig);
+		if (!stopFixedUpdate) {
+			switch (dashState) {
+			case DashState.none: // basic run
+				switch (airState) {
+				case AirState.ground:
+					playMov.PlayerRun (this, playRig);
+					break;
+				case AirState.air:
+					playMov.PlayerFall (this, playRig);
+					break;
 				}
-				// use method for airdash (needs multipurpose
 				break;
-			}
-			break;
-		case DashState.boostPower:
+			case DashState.dash:
+				switch (airState) {
+				case AirState.ground:
+					playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining);
+					break;
+				case AirState.air:
+					if (jumpDashing) {
+						playMov.PlayerJumpDash (this, playRig, dir, jumpPower, out dashDistanceRemaining);
+					} else {
+						playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining);
+					}
+					break;
+				}
+				break;
+			case DashState.boostPower:
 			/*switch (airState) {
 			case AirState.ground:
 				break;
 			case AirState.air:
 				break;
 			}*/
-			playMov.PlayerBoostUpdate (this, playRig, out dashDistanceRemaining);
-			break;
+				if (jumpDashing) {
+					// own method
+				} else {
+					playMov.PlayerDashUpdate (this, playRig, out dashDistanceRemaining, true);
+				}
+				break;
+			}
 		}
 	}
 	#endregion
+
+	public IEnumerator OnHitSlowdown(){
+		stopFixedUpdate = true;
+		yield return WaitForSeconds(CalculationLibrary.CalculateDashSlowdown(dashDistanceRemaining));
+		stopFixedUpdate = false;
+	}
 
 	#region change states
 	public void PlayerLand (){
@@ -123,6 +136,7 @@ public class Player : MonoBehaviour {
 		this.dashState = DashState.dash;
 		dir = CalculationLibrary.CalculateDashJumpDir(dashDistanceRemaining);
 		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining);
+		dashDistanceRemaining += PlayerConstants.DASH_DISTANCE * PlayerConstants.JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE;
 	}
 
 	public void PlayerDash (){

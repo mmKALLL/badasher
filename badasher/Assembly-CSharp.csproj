@@ -56,7 +56,7 @@
      <Compile Include="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs" />
      <Compile Include="Assets\Code\Objects\Powerups\Powerup_Boost.cs" />
      <Compile Include="Assets\Code\Objects\Powerups\_Powerup.cs" />
-     <Compile Include="Assets\Code\_Gamemanager\GameManager.cs" />
+     <Compile Include="Assets\Code\_Gamemanager\GameLauncher.cs" />
      <Compile Include="Assets\Code\_Gamemanager\InputHandler.cs" />
      <Compile Include="Assets\Code\_Gamemanager\MenuManager.cs" />
  <Reference Include="UnityEngine.UI">

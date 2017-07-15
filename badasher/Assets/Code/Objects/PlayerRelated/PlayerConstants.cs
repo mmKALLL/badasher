@@ -20,6 +20,7 @@ public static class PlayerConstants {
 	public const float BOOST_POWER_SPEED = 4.5f;
 	public const float RUN_SPEED = 1.0f;
 	public const float JUMP_POWER = 10; // modifier
+	public const float JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE = 0.2f; // amount of original dashdistance to add to jumpdash
 
 
 	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in seconds

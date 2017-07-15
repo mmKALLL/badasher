@@ -5,15 +5,19 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
 	// Contains methods (for FixedUpdate) for dashing, jumping, airdashing and running
 
-
-
-	public void PlayerDashUpdate (Player player, Rigidbody2D playerRig, out float dashDistanceRemaining){
-		
-	}
-
-
-	public void PlayerBoostUpdate (Player player, Rigidbody2D playerRig, out float dashDistanceRemaining){
-		
+	public void PlayerDashUpdate (Player player, Rigidbody2D playerRig, out float dashDistanceRemaining, bool boostPower){
+		if (player.dashDistanceRemaining <= 0) {
+			player.PlayerEndDash ();
+			dashDistanceRemaining = 0;
+			return;
+		}
+		float constDashMod;
+		if (boostPower) {
+			constDashMod = PlayerConstants.BOOST_POWER_SPEED;
+		} else {
+			constDashMod = PlayerConstants.DASH_SPEED;
+		}
+		playerRig.MovePosition (transform.position + Vector3.right * constDashMod * Time.fixedDeltaTime);
 	}
 		
 
@@ -37,11 +41,11 @@ public class PlayerMovement : MonoBehaviour {
 		dashDistanceRemaining = player.dashDistanceRemaining-moveAmount;
 	}
 
-	public void PlayerFall(Player player, Rigidbody2D playerRig){
-
+	public void PlayerFall (Player player, Rigidbody2D playerRig){
+		// nothing, let the gravity do its work.
 	}
 
-	public void PlayerRun(Player player, Rigidbody2D playerRig){
-		playerRig.MovePosition (transform.position + Vector3.right * PlayerConstants.RUN_SPEED * Time.fixedDeltaTime);
+	public void PlayerRun (Player player, Rigidbody2D playerRig){
+		playerRig.MovePosition(transform.position + Vector3.right * PlayerConstants.RUN_SPEED * Time.fixedDeltaTime);
 	}
 }
