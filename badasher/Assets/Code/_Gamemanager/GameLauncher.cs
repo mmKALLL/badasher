@@ -15,9 +15,9 @@ public class GameLauncher : MonoBehaviour {
 	public GameObject powerup;
 
 	// boots up the stuff
-	void Start () {
-		// TODO
-		GenerateStage();
+
+	void Awake (){
+		GenerateStage ();
 	}
 
 
