@@ -102,7 +102,8 @@ public class GameLauncher : MonoBehaviour {
 		}
 
 		// Initial start area
-		
+		player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
+		player.transform.localScale = normalizeToSize(player, 2 * 360 / 572, 2, 0);
 
 		// Generate floors
 		int x = 0;
