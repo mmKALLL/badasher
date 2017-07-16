@@ -80,7 +80,12 @@ public class GameLauncher : MonoBehaviour {
 	// Helper functions for stage generation.
 	private Vector3 normalizeToSize(GameObject gameObject, float x, float y, float z) {
 		return new Vector3 (
+			/*
 			x * gameObject.transform.localScale.x / gameObject.GetComponent<Renderer>().bounds.size.x, 
+			y * gameObject.transform.localScale.y / gameObject.GetComponent<Renderer>().bounds.size.y, 
+			z * gameObject.transform.localScale.z / gameObject.GetComponent<Renderer>().bounds.size.z);*/
+
+			x / (gameObject.GetComponent<SpriteRenderer>().sprite.rect.width / gameObject.GetComponent<SpriteRenderer>().sprite.pixelsPerUnit),
 			y * gameObject.transform.localScale.y / gameObject.GetComponent<Renderer>().bounds.size.y, 
 			z * gameObject.transform.localScale.z / gameObject.GetComponent<Renderer>().bounds.size.z);
 	}

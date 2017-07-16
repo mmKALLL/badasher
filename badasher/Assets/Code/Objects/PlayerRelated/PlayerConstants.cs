@@ -4,35 +4,33 @@ using UnityEngine;
 
 public static class PlayerConstants {
 	public const int BOOST_POWER_MAX = 100;
-	public const int BOOST_POWER_COST = 30;
-	public const int BOOST_POWER_DEFAULT = 50;
+	public const int BOOST_POWER_COST = 20;
+	public const int BOOST_POWER_DEFAULT = 70;
 
-	public const float DASH_COOLDOWN = 0.5f; // in seconds
-	public const float DASH_GROUND_END_LAG = 0.09f; // in seconds
-	public const float DASH_DISTANCE = 5.0f; // modifier, in distance
-	public const float BOOST_POWER_DISTANCE = 1.5f*DASH_DISTANCE;
+	public const float DASH_SPEED = 40.0f; // modifiers
+	public const float BOOST_POWER_SPEED = 60.0f;
+	public const float RUN_SPEED = 12.0f;
+	public const float JUMP_POWER = 0.7f; // modifier
+	public const float JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE = 0.6f; // amount of original dashdistance to add to jumpdash
+	public const float JUMP_DASH_AFTER_MOMENTUM_MODIFIER = 1.7f; // higher means less velocity after jumpDash
+
+	public const float DASH_COOLDOWN = 0.2f; // in seconds
+	public const float DASH_GROUND_END_LAG = 0.03f; // in seconds
+	public const float DASH_DISTANCE = DASH_SPEED * 0.25f; // modifier, in distance
+	public const float BOOST_POWER_DISTANCE = 0.9f*DASH_DISTANCE * (BOOST_POWER_SPEED / DASH_SPEED);
 
 	public const float DASH_SLOWDOWN_PERFECT_PERCENTAGE = 0.15f;
 	public const float DASH_SLOWDOWN_END_PERCENTEGE = 0.1f;
 	public const float DASH_SLOWDOWN_END_MODIFIER = 1.5f;
 
-
-	public const float DASH_SPEED = 30.0f; // modifiers
-	public const float BOOST_POWER_SPEED = 40.0f;
-	public const float RUN_SPEED = 10.0f;
-	public const float JUMP_POWER = 10; // modifier
-	public const float JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE = 0.8f; // amount of original dashdistance to add to jumpdash
-	public const float JUMP_DASH_AFTER_MOMENTUM_MODIFIER = 1.7f; // higher means less velocity after jumpDash
-
-
-	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in seconds
+	public const float BOOST_POWER_INPUT_BUFFER = 0.8f; // in seconds // TODO unused
 
 
 	public const int ENEMY_BP_DAMAGE = 20; // out of Boost Power Max
-	public const float DAMAGE_INVUNERABILITY_TIME = 0.3f; // in seconds
+	public const float DAMAGE_INVUNERABILITY_TIME = 0.6f; // in seconds
 
 
-	public const int POWERUP_BOOST_AMOUNT = 40;
+	public const int POWERUP_BOOST_AMOUNT = 20;
 
-	public const float DIRECTION_PERCENTAGE_MAX = 0.72f;
+	public const float DIRECTION_PERCENTAGE_MAX = 0.62f;
 }

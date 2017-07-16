@@ -33,7 +33,7 @@ public static class CalculationLibrary {
 	public static float CalculateDashJumpPower (float dashDistanceRemaining, bool boostPower){
 		float distancePercentageLeft = 1-(PlayerConstants.DASH_DISTANCE - dashDistanceRemaining) / PlayerConstants.DASH_DISTANCE;
 		distancePercentageLeft = Mathf.Max (Mathf.Min (1, distancePercentageLeft), 0);
-		float power = distancePercentageLeft * 0.7f + 1.1f;
+		float power = PlayerConstants.JUMP_POWER * (distancePercentageLeft * 0.7f + 1.1f);
 		Debug.Log ("JumpPower " + power);
 		return power;
 	}
