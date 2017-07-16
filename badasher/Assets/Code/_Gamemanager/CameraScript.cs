@@ -6,15 +6,19 @@ public class CameraScript : MonoBehaviour {
 
 	Player player;
 	Vector3 offset;
+	float camHorizontalExtent;
 
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent <Player> ();
 		offset = new Vector3 (0, 0, -10);
+		camHorizontalExtent = this.GetComponent<Camera> ().orthographicSize;
 
 	}
 	
 	// Update is called once per frame
 	void LateUpdate () {
-		transform.position = player.transform.position + offset;
+		Vector3 attemptedPosition = player.transform.position + offset;
+		attemptedPosition.y = Mathf.Clamp (attemptedPosition.y, -25+camHorizontalExtent, 25-camHorizontalExtent);
+		transform.position = attemptedPosition;
 	}
 }

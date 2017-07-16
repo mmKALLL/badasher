@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 	// Stores data and has plethora of methods for interacting with
@@ -192,7 +193,6 @@ public class Player : MonoBehaviour {
 			this.jumpDashing = false;
 			this.dashState = DashState.boostPower;
 			playerAnimator.SetBool ("BoostPower", true);
-			// calculate dir here
 			dashDistanceRemaining = PlayerConstants.BOOST_POWER_DISTANCE;
 		}
 	}
@@ -226,6 +226,7 @@ public class Player : MonoBehaviour {
 			boostPower -= damageAmount;
 			if (boostPower < 0) {
 				this.liveState = LiveState.dead;
+				SceneManager.LoadScene (1);
 			}
 		}
 	}
