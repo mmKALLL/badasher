@@ -37,11 +37,19 @@ public class GameLauncher : MonoBehaviour {
 		public float FLOOR_BASE_LENGTH;
 		public float AIR_ENEMY_SPAWN_CHANCE;
 		public float MINE_SPAWN_CHANCE;
+		public float AIR_POWERUP_SPAWN_CHANCE;
 		public float GROUND_OBJECT_SPAWN_DISTANCE;
+
+		public float PLAYER_SIZE;
+		public float POWERUP_SIZE;
+		public float GROUND_ENEMY_SIZE;
+		public float AIR_ENEMY_SIZE;
+		public float MINE_SIZE;
+		public float RAMP_SIZE;
 
 		public StageGeneratorConstants() {
 			GAME_LENGTH = 10;
-			STAGE_DEFAULT_LENGTH = 20;
+			STAGE_DEFAULT_LENGTH = 10;
 			SCREEN_DEFAULT_LENGTH = 100;
 			GAME_LENGTH_IN_SCREENS = 0;
 			STAGE_LENGTHS = new int[GAME_LENGTH];
@@ -51,12 +59,20 @@ public class GameLauncher : MonoBehaviour {
 			}
 
 			DEATH_ZONE_HEIGHT_FROM_BOTTOM = 7; // Unused apart from generation, for now.
-			TUTORIAL_FLOOR_LENGTH = 40;
-			FLOOR_BASE_LENGTH = 14; // Average length, some variation included.
+			TUTORIAL_FLOOR_LENGTH = 60;
+			FLOOR_BASE_LENGTH = 10; // Average length, some variation included.
 
 			AIR_ENEMY_SPAWN_CHANCE = 0.12f;
 			MINE_SPAWN_CHANCE = 0.6f;
-			GROUND_OBJECT_SPAWN_DISTANCE = 2.5f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
+			AIR_POWERUP_SPAWN_CHANCE = 0.22f;
+			GROUND_OBJECT_SPAWN_DISTANCE = 2.9f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
+		
+			PLAYER_SIZE = 2.0f;
+			POWERUP_SIZE = 1.4f;
+			GROUND_ENEMY_SIZE = 2.25f;
+			AIR_ENEMY_SIZE = 1.7f;
+			MINE_SIZE = 1.8f;
+			RAMP_SIZE = 1.1f;
 		}
 	}
 
@@ -71,8 +87,7 @@ public class GameLauncher : MonoBehaviour {
 
 	private Vector3 ScaleToUnit(float desiredUnitHeight, Sprite sprite){
 		float heightScale = desiredUnitHeight / (sprite.rect.height / sprite.pixelsPerUnit);
-		Vector3 returnee = new Vector3 (heightScale, heightScale, 1);
-		return returnee;
+		return new Vector3 (heightScale, heightScale, 1);
 	}
 
 	private Vector3 FloorScale(SpriteRenderer renderer, float desiredUnitLength){
@@ -127,43 +142,41 @@ public class GameLauncher : MonoBehaviour {
 		int totalScreens = sg.GetGameLengthInScreens ();
 		int i;
 		for (i = 0; i < totalScreens; i++) {
-			backgrounds.Add (Instantiate(background, new Vector3(100 * i - 100, 0, 20), Quaternion.identity));
+			backgrounds.Add (Instantiate(background, new Vector3(sg.SCREEN_DEFAULT_LENGTH * i - 100, 0, 20), Quaternion.identity));
 			if (i > sg.STAGE_DEFAULT_LENGTH) {
 				backgrounds [i].GetComponent<Renderer> ().material.color = Color.HSVToRGB (
 					(i / sg.STAGE_DEFAULT_LENGTH) * 1.0f / sg.GAME_LENGTH,
 					0.4f,
 					1.0f);
 			}
-			backgrounds[i].transform.localScale = normalizeToSize(backgrounds[i], 100, 50, 0);
+			backgrounds[i].transform.localScale = normalizeToSize(backgrounds[i], sg.SCREEN_DEFAULT_LENGTH, 50, 0);
 		}
 
 		// Initial start area
 		player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
 		//player.transform.localScale = normalizeToSize(player, 2 * 400 / 572, 2, 0);
-		player.transform.localScale = ScaleToUnit (2, player.GetComponent<SpriteRenderer>().sprite);
+		player.transform.localScale = ScaleToUnit (sg.PLAYER_SIZE, player.GetComponent<SpriteRenderer>().sprite);
 
 		floors.Add(Instantiate(floor, new Vector3(-10,0,3), Quaternion.identity));
 		//floors[0].transform.localScale = normalizeToSize(floor, 120.0f, 0.6f, 0.0f);
-		floors[0].transform.localScale = FloorScale(floors[0].GetComponent<SpriteRenderer>(), 100f);
+		floors[0].transform.localScale = FloorScale(floors[0].GetComponent<SpriteRenderer>(), sg.TUTORIAL_FLOOR_LENGTH + 10);
 
-		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(40,0,3), Quaternion.identity));
-		groundEnemies[0].transform.localScale = ScaleToUnit (2f, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
+		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 2.0f, 0, 3), Quaternion.identity));
+		groundEnemies[0].transform.localScale = ScaleToUnit (sg.GROUND_ENEMY_SIZE, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
 
-		powerups.Add(Instantiate(powerup, new Vector3(70, 0 ,3), Quaternion.identity));
-		powerups[0].transform.localScale = ScaleToUnit (1.4f, powerups [0].GetComponent<SpriteRenderer> ().sprite);
+		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 1.5f,0,3), Quaternion.identity));
+		groundEnemies[0].transform.localScale = ScaleToUnit (sg.GROUND_ENEMY_SIZE, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
 
-		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (97-10, 0, 3), Quaternion.identity);
-		tutorialEndRamp.transform.localScale = ScaleToUnit (0.6f, tutorialEndRamp.GetComponent<SpriteRenderer> ().sprite);
+		powerups.Add(Instantiate(powerup, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 1.2f, 0, 3), Quaternion.identity));
+		powerups[0].transform.localScale = ScaleToUnit (sg.POWERUP_SIZE, powerups [0].GetComponent<SpriteRenderer> ().sprite);
+
+		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (sg.TUTORIAL_FLOOR_LENGTH - 1, 0, 3), Quaternion.identity);
+		tutorialEndRamp.transform.localScale = ScaleToUnit (sg.RAMP_SIZE, tutorialEndRamp.GetComponent<SpriteRenderer> ().sprite);
 		ramps.Add (tutorialEndRamp);
-		// FIXME: Tutorial end ramp does not get generated or added properly?
-		// TODO: Add more objects for a tutorial-ish start
-
-
-
 
 
 		// Generate floors and stuff on them.
-		float x = 90.0f;
+		float x = sg.TUTORIAL_FLOOR_LENGTH;
 		float y = 0.0f;
 		float diff; // Difficulty which increases over time to make the gaps wider and more challenging.
 		i = 0;
@@ -173,17 +186,19 @@ public class GameLauncher : MonoBehaviour {
 			// Raise difficulty based on a reverse exponential function. Speed expected to increase (very) gradually as well.
 			// https://i.gyazo.com/956ebcd135567279bb4a00d01e312ca1.png
 			diff = (Random.value * 0.5f + 0.75f) * 
-				(4 + (Mathf.Pow(x, 0.71f) * 0.030f));
-			float angle = (Random.value - 0.5f) * (24 + diff * 2) - 1.8f;
+				(8 + (Mathf.Pow(x, 0.71f) * 0.080f));
+			float angle = (Random.value - 0.47f) * (24 + diff) - 1.4f;
 
 			// Check if floor would be too high or low; reverse direction if so
 			if (y > 20 && angle >= 0)
 				angle = -angle;
 			else if (y < -(20-sg.DEATH_ZONE_HEIGHT_FROM_BOTTOM) && angle < 0)
 				angle = -angle;
+			
 			x += Mathf.Cos (angle / 180 * Mathf.PI) * diff;
 			y += Mathf.Sin (angle / 180 * Mathf.PI) * diff;
 
+			// Midair objects before the actual platform.
 			if (Random.value < sg.AIR_ENEMY_SPAWN_CHANCE) {
 				GameObject newAirEnemy = Instantiate (airEnemy, new Vector3 (x - 2, y + Random.Range (1, 6), 2), Quaternion.identity);
 				newAirEnemy.transform.localScale = ScaleToUnit (0.8f, newAirEnemy.GetComponent<SpriteRenderer> ().sprite);
@@ -194,8 +209,15 @@ public class GameLauncher : MonoBehaviour {
 				newMine.transform.localScale = ScaleToUnit (1.2f, newMine.GetComponent<SpriteRenderer> ().sprite);
 				mines.Add(newMine);
 			}
+			if (Random.value < sg.AIR_POWERUP_SPAWN_CHANCE) {
+				GameObject newPowerup = Instantiate (powerup, new Vector3 (x - (1.5f * Random.Range(-2, 1)), y + Random.Range (3, 8), 2), Quaternion.identity);
+				newPowerup.transform.localScale = ScaleToUnit (1.2f, newPowerup.GetComponent<SpriteRenderer> ().sprite);
+				powerups.Add(newPowerup);
+			}
+
+			// Add the new floor.
 			floors.Add(Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity));
-			float floorLen = (Random.value * 2.0f + 2.0f) / 3 * sg.FLOOR_BASE_LENGTH; // This should scale by difficulty; increased game speed will compensate by reducing the time spent per platform.
+			float floorLen = (Random.value * 3.0f + 2.0f) / 3.5f * diff / 2 * sg.FLOOR_BASE_LENGTH; // This should scale by difficulty; increased game speed will compensate by reducing the time spent per platform.
 			if (i != 0) {
 				//floors[i].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
 				floors [i].transform.localScale = FloorScale (floors [0].GetComponent<SpriteRenderer> (), floorLen);
@@ -204,27 +226,27 @@ public class GameLauncher : MonoBehaviour {
 
 			// Place objects and enemies.
 			float leftEdge = x;
-			x += 2;
+			x += sg.GROUND_OBJECT_SPAWN_DISTANCE * 1.4f;
 			while (x < leftEdge + floorLen - 4) {
 				switch (Random.Range(0, 7)) {
 				case 0:
+				case 1:
 					GameObject newGroundEnemy = Instantiate (groundEnemy, new Vector3 (x, y, 2), Quaternion.identity);
-					newGroundEnemy.transform.localScale = ScaleToUnit (1f, newGroundEnemy.GetComponent<SpriteRenderer> ().sprite);
+					newGroundEnemy.transform.localScale = ScaleToUnit (sg.GROUND_ENEMY_SIZE, newGroundEnemy.GetComponent<SpriteRenderer> ().sprite);
 					groundEnemies.Add (newGroundEnemy);
 					break;
-				case 1:
 				case 2:
 				case 3:
 					break; // generate nothing
 				case 4:
 				case 5:
-					GameObject newPowerup = Instantiate (powerup, new Vector3 (x, y+0.5f, 1), Quaternion.identity);
-					newPowerup.transform.localScale = ScaleToUnit (0.5f, newPowerup.GetComponent<SpriteRenderer> ().sprite);
+					GameObject newPowerup = Instantiate (powerup, new Vector3 (x, y, 1), Quaternion.identity);
+					newPowerup.transform.localScale = ScaleToUnit (sg.POWERUP_SIZE, newPowerup.GetComponent<SpriteRenderer> ().sprite);
 					powerups.Add (newPowerup);
 					break;
 				case 6:
 					GameObject newRamp = Instantiate (ramp, new Vector3 (x, y, 3), Quaternion.identity);
-					newRamp.transform.localScale = ScaleToUnit (0.6f, newRamp.GetComponent<SpriteRenderer> ().sprite);
+					newRamp.transform.localScale = ScaleToUnit (sg.RAMP_SIZE, newRamp.GetComponent<SpriteRenderer> ().sprite);
 					ramps.Add (newRamp);
 					break;
 				}
@@ -236,12 +258,12 @@ public class GameLauncher : MonoBehaviour {
 
 			// Some cleanup; shift indexes. x has been set to match the end of the platform.
 			i++;
-			x = leftEdge + floorLen - 1.8f;
+			x = leftEdge + floorLen - 0.8f;
 
 			// Finally place a ramp near the end.
 			//GameObject floorEndRamp = Instantiate (ramp, new Vector3 (x + Random.value * 0.8f, y, 3), Quaternion.identity);
-			GameObject floorEndRamp = Instantiate (ramp, new Vector3 (x + Random.value * 0.2f-0.2f, y, 3), Quaternion.identity);
-			floorEndRamp.transform.localScale = ScaleToUnit (0.6f, floorEndRamp.GetComponent<SpriteRenderer> ().sprite);
+			GameObject floorEndRamp = Instantiate (ramp, new Vector3 (x, y, 3), Quaternion.identity);
+			floorEndRamp.transform.localScale = ScaleToUnit (sg.RAMP_SIZE, floorEndRamp.GetComponent<SpriteRenderer> ().sprite);
 			ramps.Add (floorEndRamp);
 			x = leftEdge + floorLen;
 		}
