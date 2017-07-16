@@ -33,10 +33,11 @@ public class GameLauncher : MonoBehaviour {
 		}
 		public float DEATH_ZONE_HEIGHT_FROM_BOTTOM;
 
+		public float TUTORIAL_FLOOR_LENGTH;
 		public float FLOOR_BASE_LENGTH;
 		public float AIR_ENEMY_SPAWN_CHANCE;
 		public float MINE_SPAWN_CHANCE;
-		public float GROUND_OBJECT_SPAWN_DISTANCE; 
+		public float GROUND_OBJECT_SPAWN_DISTANCE;
 
 		public StageGeneratorConstants() {
 			GAME_LENGTH = 10;
@@ -50,11 +51,12 @@ public class GameLauncher : MonoBehaviour {
 			}
 
 			DEATH_ZONE_HEIGHT_FROM_BOTTOM = 7; // Unused apart from generation, for now.
-			FLOOR_BASE_LENGTH = 10; // Minimum at least twice as much as this.
+			TUTORIAL_FLOOR_LENGTH = 40;
+			FLOOR_BASE_LENGTH = 14; // Average length, some variation included.
 
 			AIR_ENEMY_SPAWN_CHANCE = 0.12f;
 			MINE_SPAWN_CHANCE = 0.6f;
-			GROUND_OBJECT_SPAWN_DISTANCE = 2.7f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
+			GROUND_OBJECT_SPAWN_DISTANCE = 2.5f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
 		}
 	}
 
@@ -140,17 +142,17 @@ public class GameLauncher : MonoBehaviour {
 		//player.transform.localScale = normalizeToSize(player, 2 * 400 / 572, 2, 0);
 		player.transform.localScale = ScaleToUnit (2, player.GetComponent<SpriteRenderer>().sprite);
 
-		floors.Add(Instantiate(floor, new Vector3(-10,-1,3), Quaternion.identity));
+		floors.Add(Instantiate(floor, new Vector3(-10,0,3), Quaternion.identity));
 		//floors[0].transform.localScale = normalizeToSize(floor, 120.0f, 0.6f, 0.0f);
 		floors[0].transform.localScale = FloorScale(floors[0].GetComponent<SpriteRenderer>(), 100f);
 
-		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(40,-1,3), Quaternion.identity));
+		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(40,0,3), Quaternion.identity));
 		groundEnemies[0].transform.localScale = ScaleToUnit (2f, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
 
-		powerups.Add(Instantiate(powerup, new Vector3(70,-0.5f,3), Quaternion.identity));
-		powerups[0].transform.localScale = ScaleToUnit (0.5f, powerups [0].GetComponent<SpriteRenderer> ().sprite);
+		powerups.Add(Instantiate(powerup, new Vector3(70, 0 ,3), Quaternion.identity));
+		powerups[0].transform.localScale = ScaleToUnit (1.4f, powerups [0].GetComponent<SpriteRenderer> ().sprite);
 
-		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (100, 0, 3), Quaternion.identity);
+		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (97-10, 0, 3), Quaternion.identity);
 		tutorialEndRamp.transform.localScale = ScaleToUnit (0.6f, tutorialEndRamp.GetComponent<SpriteRenderer> ().sprite);
 		ramps.Add (tutorialEndRamp);
 		// FIXME: Tutorial end ramp does not get generated or added properly?
@@ -161,7 +163,7 @@ public class GameLauncher : MonoBehaviour {
 
 
 		// Generate floors and stuff on them.
-		float x = 100.0f;
+		float x = 90.0f;
 		float y = 0.0f;
 		float diff; // Difficulty which increases over time to make the gaps wider and more challenging.
 		i = 0;
@@ -171,7 +173,7 @@ public class GameLauncher : MonoBehaviour {
 			// Raise difficulty based on a reverse exponential function. Speed expected to increase (very) gradually as well.
 			// https://i.gyazo.com/956ebcd135567279bb4a00d01e312ca1.png
 			diff = (Random.value * 0.5f + 0.75f) * 
-				(2 + (Mathf.Pow(x, 0.7f) * 0.028f));
+				(4 + (Mathf.Pow(x, 0.71f) * 0.030f));
 			float angle = (Random.value - 0.5f) * (24 + diff * 2) - 1.8f;
 
 			// Check if floor would be too high or low; reverse direction if so
@@ -193,7 +195,7 @@ public class GameLauncher : MonoBehaviour {
 				mines.Add(newMine);
 			}
 			floors.Add(Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity));
-			float floorLen = (Random.value * 2f + 2f) * sg.FLOOR_BASE_LENGTH; // This should scale by difficulty; increased game speed will compensate by reducing the time spent per platform.
+			float floorLen = (Random.value * 2.0f + 2.0f) / 3 * sg.FLOOR_BASE_LENGTH; // This should scale by difficulty; increased game speed will compensate by reducing the time spent per platform.
 			if (i != 0) {
 				//floors[i].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
 				floors [i].transform.localScale = FloorScale (floors [0].GetComponent<SpriteRenderer> (), floorLen);
