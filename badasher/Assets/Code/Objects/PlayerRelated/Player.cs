@@ -5,9 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 	// Stores data and has plethora of methods for interacting with
 
-	PlayerCollisions playCol;
-	PlayerMovement playMov;
-	Rigidbody2D playRig;
+	PlayerCollisions playerCol;
+	PlayerMovement playerMov;
+	Rigidbody2D playerRig;
+	Animator playerAnimator;
 
 	private int boostPower;
 	private float dashCooldown; // use this for the UI element
@@ -68,9 +69,10 @@ public class Player : MonoBehaviour {
 	public void Awake(){
 		dashCooldown = PlayerConstants.DASH_COOLDOWN;
 		StartCoroutine (DashCooldownReduce ());
-		playMov = this.GetComponent<PlayerMovement> ();
-		playCol = this.GetComponent<PlayerCollisions> ();
-		playRig = this.GetComponent<Rigidbody2D> ();
+		playerMov = this.GetComponent<PlayerMovement> ();
+		playerCol = this.GetComponent<PlayerCollisions> ();
+		playerRig = this.GetComponent<Rigidbody2D> ();
+		playerAnimator = this.GetComponent<Animator> ();
 	}
 
 	public void Start(){
@@ -87,23 +89,23 @@ public class Player : MonoBehaviour {
 			case DashState.none: // basic run
 				switch (airState) {
 				case AirState.ground:
-					playMov.PlayerRun (this, playRig);
+					playerMov.PlayerRun (this, playerRig);
 					break;
 				case AirState.air:
-					playMov.PlayerFall (this, playRig);
+					playerMov.PlayerFall (this, playerRig);
 					break;
 				}
 				break;
 			case DashState.dash:
 				switch (airState) {
 				case AirState.ground:
-					playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, false);
+					playerMov.PlayerDashUpdate(this, playerRig, out dashDistanceRemaining, false);
 					break;
 				case AirState.air:
 					if (jumpDashing) {
-						playMov.PlayerJumpDash(this, playRig, dir, jumpPower, out dashDistanceRemaining, false);
+						playerMov.PlayerJumpDash(this, playerRig, dir, jumpPower, out dashDistanceRemaining, false);
 					} else {
-						playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, false);
+						playerMov.PlayerDashUpdate(this, playerRig, out dashDistanceRemaining, false);
 					}
 					break;
 				}
@@ -116,9 +118,9 @@ public class Player : MonoBehaviour {
 				break;
 			}*/
 				if (jumpDashing) {
-					playMov.PlayerJumpDash(this, playRig, dir, jumpPower, out dashDistanceRemaining, true);
+					playerMov.PlayerJumpDash(this, playerRig, dir, jumpPower, out dashDistanceRemaining, true);
 				} else {
-					playMov.PlayerDashUpdate(this, playRig, out dashDistanceRemaining, true);
+					playerMov.PlayerDashUpdate(this, playerRig, out dashDistanceRemaining, true);
 				}
 				break;
 			}
@@ -136,13 +138,15 @@ public class Player : MonoBehaviour {
 	public void PlayerLand (){
 		this.jumpDashing = false;
 		this.airState = AirState.ground;
+		playerAnimator.SetBool ("InAir", false);
 		this.airdashAvailable = true;
-		playRig.isKinematic = false;
+		playerRig.isKinematic = false;
 	}
 
 	public void PlayerHitRamp (){
 		this.jumpDashing = true;
 		this.airState = AirState.air;
+		playerAnimator.SetBool ("InAir",true);
 		dir = CalculationLibrary.CalculateDashJumpDir(dashDistanceRemaining);
 		bool boostPowerBool;
 		if (this.dashState == DashState.boostPower) {
@@ -150,7 +154,7 @@ public class Player : MonoBehaviour {
 		} else {
 			boostPowerBool = false;
 		}
-		playRig.isKinematic = true;
+		playerRig.isKinematic = true;
 		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining, boostPowerBool);
 		dashDistanceRemaining += PlayerConstants.DASH_DISTANCE * PlayerConstants.JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE;
 	}
@@ -171,6 +175,7 @@ public class Player : MonoBehaviour {
 		}
 		this.jumpDashing = false;
 		this.dashState = DashState.dash;
+		playerAnimator.SetBool ("Dashing", true);
 		dashDistanceRemaining = PlayerConstants.DASH_DISTANCE; 	// doesn't actually matter, unless player goes to DashJump on 
 																// the same frame he starts dashing which shouldn't happen anyway
 	}
@@ -181,6 +186,7 @@ public class Player : MonoBehaviour {
 			this.dashCooldown = 0;
 			this.jumpDashing = false;
 			this.dashState = DashState.boostPower;
+			playerAnimator.SetBool ("BoostPower", true);
 			// calculate dir here
 			dashDistanceRemaining = PlayerConstants.BOOST_POWER_DISTANCE;
 		}
@@ -196,6 +202,8 @@ public class Player : MonoBehaviour {
 			dashCooldownStorage = StartCoroutine(DashCooldownReduce());
 		}
 		this.dashState = DashState.none;
+		playerAnimator.SetBool ("BoostPower", false);
+		playerAnimator.SetBool ("Dashing", false);
 	}
 	#endregion
 
