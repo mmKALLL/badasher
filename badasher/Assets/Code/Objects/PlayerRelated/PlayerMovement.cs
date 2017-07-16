@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (player.dashDistanceRemaining <= 0) {
 			player.PlayerDashEnd ();
 			playerRig.velocity = dir*moveAmount/Time.fixedDeltaTime/PlayerConstants.JUMP_DASH_AFTER_MOMENTUM_MODIFIER;
-			playerRig.isKinematic = false;
+			playerRig.bodyType = RigidbodyType2D.Dynamic;
 			dashDistanceRemaining = 0;
 			Debug.Log ("DASHJUMP END");
 			return;
