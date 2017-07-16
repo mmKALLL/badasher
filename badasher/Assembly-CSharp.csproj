@@ -55,6 +55,7 @@
      <Compile Include="Assets\Code\Objects\PlayerRelated\Player.cs" />
      <Compile Include="Assets\Code\Objects\PlayerRelated\PlayerCollisions.cs" />
      <Compile Include="Assets\Code\Objects\PlayerRelated\PlayerConstants.cs" />
+     <Compile Include="Assets\Code\Objects\PlayerRelated\PlayerFeetChecker.cs" />
      <Compile Include="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs" />
      <Compile Include="Assets\Code\Objects\Powerups\Powerup_Boost.cs" />
      <Compile Include="Assets\Code\Objects\Powerups\_Powerup.cs" />
