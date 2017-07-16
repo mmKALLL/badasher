@@ -118,13 +118,14 @@ public class GameLauncher : MonoBehaviour {
 		float x = 120.0f;
 		float y = 0.0f;
 		float diff;//iculty
+		int i = 0;
 
 		while (x < sg.GetGameLengthInScreens() * 80 - 200) {
 			// Raise difficulty based on a reverse exponential function. Speed expected to increase (very) gradually as well.
 			// https://i.gyazo.com/956ebcd135567279bb4a00d01e312ca1.png
 			diff = (Random.value * 0.5f + 0.75f) * 
 				(2 + (Mathf.Pow(x, 0.7f) * 0.028f));
-			float angle = (Random.value - 0.5f) * (20 + diff) - 1.5f;
+			float angle = (Random.value - 0.5f) * (24 + diff * 2) - 1.8f;
 
 			// Check if floor would be too high or low; reverse direction if so
 			if (y > 20 && angle >= 0)
@@ -135,10 +136,14 @@ public class GameLauncher : MonoBehaviour {
 			y += Mathf.Sin (angle / 180 * Mathf.PI) * diff;
 
 			floors.Add(Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity));
-			float floorLen = (Random.value + 0.4) * (diff * 0.7) * sg.FLOOR_BASE_LENGTH;
-			floors[0].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
+			float floorLen = (Random.value + 0.4f) * (diff * 0.7f) * sg.FLOOR_BASE_LENGTH;
+			floors[i].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
 
 			// Place objects and enemies.
+
+
+			// Finally some cleanup; shift indexes and set x to match the end of the platform.
+			i++;
 		}
 
 
