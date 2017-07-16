@@ -58,11 +58,28 @@ public class GameLauncher : MonoBehaviour {
 		}
 	}
 
+
+	// Helper functions for stage generation.
 	private Vector3 normalizeToSize(GameObject gameObject, float x, float y, float z) {
 		return new Vector3 (
 			x * gameObject.transform.localScale.x / gameObject.GetComponent<Renderer>().bounds.size.x, 
 			y * gameObject.transform.localScale.y / gameObject.GetComponent<Renderer>().bounds.size.y, 
 			z * gameObject.transform.localScale.z / gameObject.GetComponent<Renderer>().bounds.size.z);
+	}
+
+	private Vector3 ScaleToUnit(float desiredUnitHeight, Sprite sprite){
+		float heightScale = desiredUnitHeight / (sprite.rect.height / sprite.pixelsPerUnit);
+		Vector3 returnee = new Vector3 (heightScale, heightScale, 1);
+		return returnee;
+	}
+
+	private Vector3 FloorScale(SpriteRenderer renderer, float desiredUnitLength){
+		/*float lengthScale = desiredUnitLength / (8.5f);
+		//Debug.Log (renderer.bounds.size.x);
+		return new Vector3 (lengthScale, 0.105f, 1f);
+		//(sprite.rect.width / sprite.pixelsPerUnit)*/
+
+		return normalizeToSize (floor, desiredUnitLength, 0.6f, 0.0f);
 	}
 
 	/**
@@ -128,12 +145,12 @@ public class GameLauncher : MonoBehaviour {
 		floors[0].transform.localScale = FloorScale(floors[0].GetComponent<SpriteRenderer>(), 100f);
 
 		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(40,-1,3), Quaternion.identity));
-		groundEnemies[0].transform.localScale = ScaleToUnit (1f, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
+		groundEnemies[0].transform.localScale = ScaleToUnit (2f, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
 
 		powerups.Add(Instantiate(powerup, new Vector3(70,-0.5f,3), Quaternion.identity));
 		powerups[0].transform.localScale = ScaleToUnit (0.5f, powerups [0].GetComponent<SpriteRenderer> ().sprite);
 
-		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (100, -1, 3), Quaternion.identity);
+		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (100, 0, 3), Quaternion.identity);
 		tutorialEndRamp.transform.localScale = ScaleToUnit (0.6f, tutorialEndRamp.GetComponent<SpriteRenderer> ().sprite);
 		ramps.Add (tutorialEndRamp);
 		// FIXME: Tutorial end ramp does not get generated or added properly?
@@ -228,19 +245,6 @@ public class GameLauncher : MonoBehaviour {
 		}
 
 
-	}
-
-	private Vector3 ScaleToUnit(float desiredUnitHeight, Sprite sprite){
-		float heightScale = desiredUnitHeight / (sprite.rect.height / sprite.pixelsPerUnit);
-		Vector3 returnee = new Vector3 (heightScale, heightScale, 1);
-		return returnee;
-	}
-
-	private Vector3 FloorScale(SpriteRenderer renderer, float desiredUnitLength){
-		float lengthScale = desiredUnitLength / (8.5f);
-		//Debug.Log (renderer.bounds.size.x);
-		return new Vector3 (lengthScale, 0.105f, 1f);
-		//(sprite.rect.width / sprite.pixelsPerUnit)
 	}
 
 }
