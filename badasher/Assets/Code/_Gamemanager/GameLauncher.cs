@@ -96,7 +96,8 @@ public class GameLauncher : MonoBehaviour {
 		
 		// Generate backgrounds
 		int totalScreens = sg.GetGameLengthInScreens ();
-		for (int i = 0; i < totalScreens; i++) {
+		int i;
+		for (i = 0; i < totalScreens; i++) {
 			backgrounds.Add (Instantiate(background, new Vector3(100 * i - 100, 0, 20), Quaternion.identity));
 			if (i > sg.STAGE_DEFAULT_LENGTH) {
 				backgrounds [i].GetComponent<Renderer> ().material.color = Color.HSVToRGB (
@@ -118,7 +119,7 @@ public class GameLauncher : MonoBehaviour {
 		float x = 120.0f;
 		float y = 0.0f;
 		float diff;//iculty
-		int i = 0;
+		i = 0;
 
 		while (x < sg.GetGameLengthInScreens() * 80 - 200) {
 			// Raise difficulty based on a reverse exponential function. Speed expected to increase (very) gradually as well.
@@ -136,7 +137,7 @@ public class GameLauncher : MonoBehaviour {
 			y += Mathf.Sin (angle / 180 * Mathf.PI) * diff;
 
 			floors.Add(Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity));
-			float floorLen = (Random.value + 0.4f) * (diff * 0.7f) * sg.FLOOR_BASE_LENGTH;
+			float floorLen = (Random.value + 0.4f) * (diff * 0.1f) * sg.FLOOR_BASE_LENGTH;
 			floors[i].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
 
 			// Place objects and enemies.
