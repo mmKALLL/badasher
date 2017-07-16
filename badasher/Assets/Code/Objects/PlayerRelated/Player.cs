@@ -86,7 +86,7 @@ public class Player : MonoBehaviour {
 	#region fixedUpdate
 	public void FixedUpdate(){
 		//Debug.Log (dashState + " + " + airState);
-		Debug.Log(dashDistanceRemaining);
+		//Debug.Log(dashDistanceRemaining);
 		if (!stopFixedUpdate) {
 			switch (dashState) {
 			case DashState.none: // basic run
