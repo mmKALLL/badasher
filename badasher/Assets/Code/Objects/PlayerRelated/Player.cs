@@ -52,6 +52,9 @@ public class Player : MonoBehaviour {
 	public bool IsJumpDashing(){
 		return this.jumpDashing;
 	}
+	public bool IsAirdashAvailable(){
+		return this.airdashAvailable;
+	}
 	#endregion
 
 	#region sets
@@ -140,7 +143,8 @@ public class Player : MonoBehaviour {
 		this.airState = AirState.ground;
 		playerAnimator.SetBool ("InAir", false);
 		this.airdashAvailable = true;
-		playerRig.isKinematic = false;
+		//playerRig.isKinematic = false;
+		playerRig.bodyType = RigidbodyType2D.Dynamic;
 	}
 
 	public void PlayerHitRamp (){
@@ -155,6 +159,7 @@ public class Player : MonoBehaviour {
 			boostPowerBool = false;
 		}
 		playerRig.isKinematic = true;
+		playerRig.bodyType = RigidbodyType2D.Kinematic;
 		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining, boostPowerBool);
 		dashDistanceRemaining += PlayerConstants.DASH_DISTANCE * PlayerConstants.JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE;
 	}

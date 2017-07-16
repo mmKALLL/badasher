@@ -23,7 +23,7 @@ public class InputHandler : MonoBehaviour {
 			yield return WaitForDashButton();
 			if (player.IsJumpDashing ()) { // cancel jumpDash into AirDash
 				player.PlayerDash ();
-			} else if (player.GetAirState() == Player.AirState.air) { // cancel falling into AirDash
+			} else if ((player.GetAirState() == Player.AirState.air) && (player.IsAirdashAvailable())) { // cancel falling into AirDash
 				player.PlayerDash ();
 			} else if (player.GetDashState () == Player.DashState.dash) { // cancel dash to PowerBoost
 				player.PlayerBoostPower ();
