@@ -30,7 +30,8 @@ public class GameLauncher : MonoBehaviour {
 		public int GetGameLengthInScreens() {
 			return GAME_LENGTH_IN_SCREENS;
 		}
-		public int DEATH_ZONE_HEIGHT_FROM_BOTTOM;
+		public float DEATH_ZONE_HEIGHT_FROM_BOTTOM;
+		public float FLOOR_BASE_LENGTH;
 
 		public StageGeneratorConstants() {
 			GAME_LENGTH = 10;
@@ -43,7 +44,7 @@ public class GameLauncher : MonoBehaviour {
 			}
 
 			DEATH_ZONE_HEIGHT_FROM_BOTTOM = 7; // Unused apart from generation, for now.
-
+			FLOOR_BASE_LENGTH = 10; // Minimum at least twice as much as this.
 		}
 	}
 
@@ -117,10 +118,14 @@ public class GameLauncher : MonoBehaviour {
 		float x = 120.0f;
 		float y = 0.0f;
 		float diff;//iculty
+
 		while (x < sg.GetGameLengthInScreens() * 80 - 200) {
+			// Raise difficulty based on a reverse exponential function. Speed expected to increase (very) gradually as well.
+			// https://i.gyazo.com/956ebcd135567279bb4a00d01e312ca1.png
 			diff = (Random.value * 0.5f + 0.75f) * 
-					(2 + (x * 0.003f)); // TODO: A better difficulty function, with some noise.
+				(2 + (Mathf.Pow(x, 0.7f) * 0.028f));
 			float angle = (Random.value - 0.5f) * (20 + diff) - 1.5f;
+
 			// Check if floor would be too high or low; reverse direction if so
 			if (y > 20 && angle >= 0)
 				angle = -angle;
@@ -128,6 +133,12 @@ public class GameLauncher : MonoBehaviour {
 				angle = -angle;
 			x += Mathf.Cos (angle / 180 * Mathf.PI) * diff;
 			y += Mathf.Sin (angle / 180 * Mathf.PI) * diff;
+
+			floors.Add(Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity));
+			float floorLen = (Random.value + 0.4) * (diff * 0.7) * sg.FLOOR_BASE_LENGTH;
+			floors[0].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
+
+			// Place objects and enemies.
 		}
 
 
