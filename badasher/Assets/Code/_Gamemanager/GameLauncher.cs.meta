@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 708ffe347aface04da138e5e33f6c1da
-timeCreated: 1500170842
+timeCreated: 1500175350
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
@@ -9,7 +9,8 @@ MonoImporter:
       type: 2}
   - airEnemy: {fileID: 1594145168819978, guid: 420c4fad7df27dc4c8c57242943dd251, type: 2}
   - mine: {fileID: 1310957741237502, guid: d1d5d18e35c7d724ab486d8d456d620c, type: 2}
-  - player: {fileID: 1092656064126736, guid: 59546704e532cb248890763ebfdb4a79, type: 2}
+  - playerPrefab: {fileID: 1092656064126736, guid: 59546704e532cb248890763ebfdb4a79,
+      type: 2}
   - floor: {fileID: 1894980981333376, guid: c913101608980864f8eb5bdc99de3d6e, type: 2}
   - ramp: {fileID: 1571361420461500, guid: d0e920edca349fa48b82d2f2d76f9866, type: 2}
   - background: {fileID: 1894980981333376, guid: 997d543a0e96c72459e8ec4c83a75932,
