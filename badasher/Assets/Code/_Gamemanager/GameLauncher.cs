@@ -25,7 +25,8 @@ public class GameLauncher : MonoBehaviour {
 
 		public int GAME_LENGTH; // Length in stages
 		public int STAGE_DEFAULT_LENGTH; // length in screens
-		public int SCREEN_DEFAULT_LENGTH;
+		public int BG_DEFAULT_WIDTH;
+		public int BG_DEFAULT_HEIGHT;
 		public int[] STAGE_LENGTHS;
 		private int GAME_LENGTH_IN_SCREENS;
 		public int GetGameLengthInScreens() {
@@ -33,8 +34,7 @@ public class GameLauncher : MonoBehaviour {
 		}
 		public float DEATH_ZONE_HEIGHT_FROM_BOTTOM;
 
-		public float TUTORIAL_FLOOR_LENGTH;
-		public float FLOOR_BASE_LENGTH;
+
 		public float AIR_ENEMY_SPAWN_CHANCE;
 		public float MINE_SPAWN_CHANCE;
 		public float AIR_POWERUP_SPAWN_CHANCE;
@@ -46,11 +46,16 @@ public class GameLauncher : MonoBehaviour {
 		public float AIR_ENEMY_SIZE;
 		public float MINE_SIZE;
 		public float RAMP_SIZE;
+		public float TUTORIAL_FLOOR_LENGTH;
+		public float TUTORIAL_FLOOR_SHIFT;
+		public float FLOOR_BASE_LENGTH;
+		public float FLOOR_BASE_HEIGHT;
 
 		public StageGeneratorConstants() {
 			GAME_LENGTH = 10;
-			STAGE_DEFAULT_LENGTH = 10;
-			SCREEN_DEFAULT_LENGTH = 100;
+			STAGE_DEFAULT_LENGTH = 8;
+			BG_DEFAULT_WIDTH = 100;
+			BG_DEFAULT_HEIGHT = 75; // TODO: Camera expects this value. TODO: Stretches bg image; not in aspect ratio; duplicate the BG rather than upscale.
 			GAME_LENGTH_IN_SCREENS = 0;
 			STAGE_LENGTHS = new int[GAME_LENGTH];
 			for (int i = 0; i < STAGE_LENGTHS.Length; i++) {
@@ -59,20 +64,23 @@ public class GameLauncher : MonoBehaviour {
 			}
 
 			DEATH_ZONE_HEIGHT_FROM_BOTTOM = 7; // Unused apart from generation, for now.
-			TUTORIAL_FLOOR_LENGTH = 60;
-			FLOOR_BASE_LENGTH = 10; // Average length, some variation included.
+
 
 			AIR_ENEMY_SPAWN_CHANCE = 0.12f;
 			MINE_SPAWN_CHANCE = 0.6f;
 			AIR_POWERUP_SPAWN_CHANCE = 0.22f;
 			GROUND_OBJECT_SPAWN_DISTANCE = 2.7f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
 		
-			PLAYER_SIZE = 2.0f;
+			PLAYER_SIZE = 2.6f;
 			POWERUP_SIZE = 1.4f;
-			GROUND_ENEMY_SIZE = 2.25f;
+			GROUND_ENEMY_SIZE = 2.0f;
 			AIR_ENEMY_SIZE = 1.7f;
 			MINE_SIZE = 1.8f;
-			RAMP_SIZE = 1.1f;
+			RAMP_SIZE = 1.6f;
+			TUTORIAL_FLOOR_LENGTH = 60; // Length from 0,0
+			TUTORIAL_FLOOR_SHIFT = 10; // How much left to shift the floor from 0,0; total length is LENGTH + SHIFT.
+			FLOOR_BASE_LENGTH = 10; // Average length, some variation included.
+			FLOOR_BASE_HEIGHT = 0.6f; // Height of floors.
 		}
 	}
 
@@ -80,14 +88,15 @@ public class GameLauncher : MonoBehaviour {
 	// Helper functions for stage generation.
 	private Vector3 normalizeToSize(GameObject gameObject, float x, float y, float z) {
 		return new Vector3 (
-			/*
-			x * gameObject.transform.localScale.x / gameObject.GetComponent<Renderer>().bounds.size.x, 
-			y * gameObject.transform.localScale.y / gameObject.GetComponent<Renderer>().bounds.size.y, 
-			z * gameObject.transform.localScale.z / gameObject.GetComponent<Renderer>().bounds.size.z);*/
-
-			x / (gameObject.GetComponent<SpriteRenderer>().sprite.rect.width / gameObject.GetComponent<SpriteRenderer>().sprite.pixelsPerUnit),
+			
+			x * gameObject.transform.localScale.x / // gameObject.GetComponent<Renderer>().bounds.size.x, 
+			(gameObject.GetComponent<SpriteRenderer>().sprite.rect.width / gameObject.GetComponent<SpriteRenderer>().sprite.pixelsPerUnit * gameObject.transform.localScale.x),
 			y * gameObject.transform.localScale.y / gameObject.GetComponent<Renderer>().bounds.size.y, 
 			z * gameObject.transform.localScale.z / gameObject.GetComponent<Renderer>().bounds.size.z);
+
+/*			x * gameObject.GetComponent<SpriteRenderer>().sprite.rect.width / gameObject.GetComponent<SpriteRenderer>().sprite.pixelsPerUnit,
+			y * gameObject.transform.localScale.y / gameObject.GetComponent<Renderer>().bounds.size.y, 
+			z * gameObject.transform.localScale.z / gameObject.GetComponent<Renderer>().bounds.size.z);*/
 	}
 
 	private Vector3 ScaleToUnit(float desiredUnitHeight, Sprite sprite){
@@ -95,13 +104,13 @@ public class GameLauncher : MonoBehaviour {
 		return new Vector3 (heightScale, heightScale, 1);
 	}
 
-	private Vector3 FloorScale(SpriteRenderer renderer, float desiredUnitLength){
+	private Vector3 FloorScale(SpriteRenderer renderer, float targetUnitLength){
 		/*float lengthScale = desiredUnitLength / (8.5f);
 		//Debug.Log (renderer.bounds.size.x);
 		return new Vector3 (lengthScale, 0.105f, 1f);
 		//(sprite.rect.width / sprite.pixelsPerUnit)*/
 
-		return normalizeToSize (floor, desiredUnitLength, 0.6f, 0.0f);
+		return normalizeToSize (floor, targetUnitLength, 0.8f, 0.0f);
 	}
 
 	/**
@@ -147,24 +156,32 @@ public class GameLauncher : MonoBehaviour {
 		int totalScreens = sg.GetGameLengthInScreens ();
 		int i;
 		for (i = 0; i < totalScreens; i++) {
-			backgrounds.Add (Instantiate(background, new Vector3(sg.SCREEN_DEFAULT_LENGTH * i - 100, 0, 20), Quaternion.identity));
+			backgrounds.Add (
+					Instantiate(background, 
+							new Vector3(sg.BG_DEFAULT_WIDTH * i - 100, 
+										(sg.BG_DEFAULT_HEIGHT - 50) / 2,  // Bottom of screen expected to be at -25.
+										20), 
+							Quaternion.identity
+					)
+			);
 			if (i > sg.STAGE_DEFAULT_LENGTH) {
 				backgrounds [i].GetComponent<Renderer> ().material.color = Color.HSVToRGB (
 					(i / sg.STAGE_DEFAULT_LENGTH) * 1.0f / sg.GAME_LENGTH,
 					0.4f,
 					1.0f);
 			}
-			backgrounds[i].transform.localScale = normalizeToSize(backgrounds[i], sg.SCREEN_DEFAULT_LENGTH, 50, 0);
+			backgrounds[i].transform.localScale = normalizeToSize(backgrounds[i], sg.BG_DEFAULT_WIDTH, sg.BG_DEFAULT_HEIGHT, 0);
 		}
 
-		// Initial start area
+		// Initial start area, which is a tutorial of sorts.
+
 		player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
 		//player.transform.localScale = normalizeToSize(player, 2 * 400 / 572, 2, 0);
 		player.transform.localScale = ScaleToUnit (sg.PLAYER_SIZE, player.GetComponent<SpriteRenderer>().sprite);
 
-		floors.Add(Instantiate(floor, new Vector3(-10,0,3), Quaternion.identity));
+		floors.Add(Instantiate(floor, new Vector3(-sg.TUTORIAL_FLOOR_SHIFT,0,3), Quaternion.identity));
 		//floors[0].transform.localScale = normalizeToSize(floor, 120.0f, 0.6f, 0.0f);
-		floors[0].transform.localScale = FloorScale(floors[0].GetComponent<SpriteRenderer>(), sg.TUTORIAL_FLOOR_LENGTH + 10);
+		floors[0].transform.localScale = normalizeToSize(floors[0], sg.TUTORIAL_FLOOR_LENGTH + sg.TUTORIAL_FLOOR_SHIFT, sg.FLOOR_BASE_HEIGHT, 0);
 
 		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 3.0f, 0, 3), Quaternion.identity));
 		groundEnemies[0].transform.localScale = ScaleToUnit (sg.GROUND_ENEMY_SIZE, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
@@ -187,7 +204,7 @@ public class GameLauncher : MonoBehaviour {
 		i = 0;
 
 		// Each loop generates a single floor tile. The while keeps generating them until the game's very end.
-		while (x < sg.GetGameLengthInScreens() * sg.SCREEN_DEFAULT_LENGTH - 200) {
+		while (x < sg.GetGameLengthInScreens() * sg.BG_DEFAULT_WIDTH - 200) {
 			// Raise difficulty based on a reverse exponential function. Speed expected to increase (very) gradually as well.
 			// https://i.gyazo.com/956ebcd135567279bb4a00d01e312ca1.png
 			diff = (Random.value * 0.5f + 0.75f) * 
@@ -221,12 +238,12 @@ public class GameLauncher : MonoBehaviour {
 			}
 
 			// Add the new floor.
-			floors.Add(Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity));
+			GameObject newFloor = Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity);
 			float floorLen = (Random.value * 3.0f + 2.0f) * sg.FLOOR_BASE_LENGTH; // This should scale by difficulty; increased game speed will compensate by reducing the time spent per platform.
-			if (i != 0) {
-				//floors[i].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
-				floors [i].transform.localScale = FloorScale (floors [i].GetComponent<SpriteRenderer> (), floorLen);
-			}
+			//floors[i].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
+			newFloor.transform.localScale = normalizeToSize(newFloor, floorLen, sg.FLOOR_BASE_HEIGHT, 0);
+
+			floors.Add (newFloor);
 
 
 			// Place objects and enemies.

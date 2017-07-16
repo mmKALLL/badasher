@@ -10,7 +10,7 @@ public class CameraScript : MonoBehaviour {
 
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent <Player> ();
-		offset = new Vector3 (0, 0, -10);
+		offset = new Vector3 (8.5f, 2.0f, -10);
 		camHorizontalExtent = this.GetComponent<Camera> ().orthographicSize;
 		this.GetComponent<AudioSource> ().Play ();
 
@@ -19,7 +19,7 @@ public class CameraScript : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 		Vector3 attemptedPosition = player.transform.position + offset;
-		attemptedPosition.y = Mathf.Clamp (attemptedPosition.y, -25+camHorizontalExtent, 25-15-camHorizontalExtent);
+		attemptedPosition.y = Mathf.Clamp (attemptedPosition.y, -25+camHorizontalExtent, 50-15-camHorizontalExtent);
 		transform.position = attemptedPosition;
 	}
 }
