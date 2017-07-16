@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameLauncher : MonoBehaviour {
 
-	// TODO
+	// TODO - something missing?
 	public GameObject groundEnemy;
 	public GameObject airEnemy;
 	public GameObject mine;
@@ -24,18 +24,24 @@ public class GameLauncher : MonoBehaviour {
 	protected internal class StageGeneratorConstants {
 
 		public int GAME_LENGTH; // Length in stages
-		public int STAGE_DEFAULT_LENGTH; // Length in stages
+		public int STAGE_DEFAULT_LENGTH; // length in screens
+		public int SCREEN_DEFAULT_LENGTH;
 		public int[] STAGE_LENGTHS;
 		private int GAME_LENGTH_IN_SCREENS;
 		public int GetGameLengthInScreens() {
 			return GAME_LENGTH_IN_SCREENS;
 		}
 		public float DEATH_ZONE_HEIGHT_FROM_BOTTOM;
+
 		public float FLOOR_BASE_LENGTH;
+		public float AIR_ENEMY_SPAWN_CHANCE;
+		public float MINE_SPAWN_CHANCE;
+		public float GROUND_OBJECT_SPAWN_DISTANCE; 
 
 		public StageGeneratorConstants() {
 			GAME_LENGTH = 10;
 			STAGE_DEFAULT_LENGTH = 20;
+			SCREEN_DEFAULT_LENGTH = 100;
 			GAME_LENGTH_IN_SCREENS = 0;
 			STAGE_LENGTHS = new int[GAME_LENGTH];
 			for (int i = 0; i < STAGE_LENGTHS.Length; i++) {
@@ -45,6 +51,10 @@ public class GameLauncher : MonoBehaviour {
 
 			DEATH_ZONE_HEIGHT_FROM_BOTTOM = 7; // Unused apart from generation, for now.
 			FLOOR_BASE_LENGTH = 10; // Minimum at least twice as much as this.
+
+			AIR_ENEMY_SPAWN_CHANCE = 0.12f;
+			MINE_SPAWN_CHANCE = 0.6f;
+			GROUND_OBJECT_SPAWN_DISTANCE = 2.7f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
 		}
 	}
 
@@ -60,7 +70,7 @@ public class GameLauncher : MonoBehaviour {
 	 * 
 	 * Starts with an initial fixed stage part, and creates floorings after that based on jump difficulty, which increases over time.
 	 * 
-	 * The game is divided into stages, which are divided into screens, which essentially represent 50 unit blocks.
+	 * The game is divided into stages, which are divided into screens, which essentially represent SCREEN_DEFAULT_LENGTH unit blocks.
 	 * Each screen should be the size of one BG image, which are then looped to fill the stage.
 	 * Each stage may have differing properties.
 	 * 
@@ -115,12 +125,29 @@ public class GameLauncher : MonoBehaviour {
 		floors.Add(Instantiate(floor, new Vector3(-10,-1,3), Quaternion.identity));
 		floors[0].transform.localScale = normalizeToSize(floor, 120.0f, 0.6f, 0.0f);
 
-		// Generate floors and stuff on them
+		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(40,-1,3), Quaternion.identity));
+		groundEnemies[0].transform.localScale = new Vector3 (1, 1, 1);//TODO
+
+		powerups.Add(Instantiate(powerup, new Vector3(70,-1,3), Quaternion.identity));
+		powerups[0].transform.localScale = new Vector3 (1, 1, 1);//TODO
+
+		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (108, -1, 3), Quaternion.identity);
+		tutorialEndRamp.transform.localScale = new Vector3 (1, 1, 1);//TODO
+		ramps.Add (tutorialEndRamp);
+		// FIXME: Tutorial end ramp does not get generated or added properly?
+		// TODO: Add more objects for a tutorial-ish start
+
+
+
+
+
+		// Generate floors and stuff on them.
 		float x = 120.0f;
 		float y = 0.0f;
-		float diff;//iculty
+		float diff; // Difficulty which increases over time to make the gaps wider and more challenging.
 		i = 0;
 
+		// Each loop generates a single floor tile. The while keeps generating them until the game's very end.
 		while (x < sg.GetGameLengthInScreens() * 80 - 200) {
 			// Raise difficulty based on a reverse exponential function. Speed expected to increase (very) gradually as well.
 			// https://i.gyazo.com/956ebcd135567279bb4a00d01e312ca1.png
@@ -136,15 +163,62 @@ public class GameLauncher : MonoBehaviour {
 			x += Mathf.Cos (angle / 180 * Mathf.PI) * diff;
 			y += Mathf.Sin (angle / 180 * Mathf.PI) * diff;
 
+			if (Random.value < sg.AIR_ENEMY_SPAWN_CHANCE) {
+				GameObject newAirEnemy = Instantiate (airEnemy, new Vector3 (x - 2, y + Random.Range (1, 6), 2), Quaternion.identity);
+				newAirEnemy.transform.localScale = new Vector3 (1, 1, 1);// TODO
+				airEnemies.Add(newAirEnemy);
+			}
+			if (Random.value < sg.MINE_SPAWN_CHANCE) {
+				GameObject newMine = Instantiate (mine, new Vector3 (x - 2, y + Random.Range (1, 6), 2), Quaternion.identity);
+				newMine.transform.localScale = new Vector3 (1, 1, 1);// TODO
+				mines.Add(newMine);
+			}
 			floors.Add(Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity));
-			float floorLen = (Random.value + 0.4f) * (diff * 0.1f) * sg.FLOOR_BASE_LENGTH;
+			float floorLen = (Random.value * 1.2f + 0.4f) * sg.FLOOR_BASE_LENGTH; // This should scale by difficulty; increased game speed will compensate by reducing the time spent per platform.
 			floors[i].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
 
+
 			// Place objects and enemies.
+			float leftEdge = x;
+			x += 2;
+			while (x < leftEdge + floorLen - 4) {
+				switch (Random.Range(0, 7)) {
+				case 0:
+					GameObject newGroundEnemy = Instantiate (groundEnemy, new Vector3 (x, y, 2), Quaternion.identity);
+					newGroundEnemy.transform.localScale = new Vector3 (1, 1, 1);//TODO
+					groundEnemies.Add (newGroundEnemy);
+					break;
+				case 1:
+				case 2:
+				case 3:
+					break; // generate nothing
+				case 4:
+				case 5:
+					GameObject newPowerup = Instantiate (powerup, new Vector3 (x, y, 1), Quaternion.identity);
+					newPowerup.transform.localScale = new Vector3 (1, 1, 1);//TODO
+					powerups.Add (newPowerup);
+					break;
+				case 6:
+					GameObject newRamp = Instantiate (ramp, new Vector3 (x, y, 3), Quaternion.identity);
+					newRamp.transform.localScale = new Vector3 (1, 1, 1);//TODO
+					ramps.Add (newRamp);
+					break;
+				}
+
+				// increment x
+				x += sg.GROUND_OBJECT_SPAWN_DISTANCE;
+			}
 
 
-			// Finally some cleanup; shift indexes and set x to match the end of the platform.
+			// Some cleanup; shift indexes. x has been set to match the end of the platform.
 			i++;
+			x = leftEdge + floorLen - 1.8f;
+
+			// Finally place a ramp near the end.
+			GameObject floorEndRamp = Instantiate (ramp, new Vector3 (x + Random.value * 0.8f, y, 3), Quaternion.identity);
+			floorEndRamp.transform.localScale = new Vector3 (1, 1, 1);//TODO
+			ramps.Add (floorEndRamp);
+			x = leftEdge + floorLen;
 		}
 
 
