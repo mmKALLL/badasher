@@ -65,7 +65,7 @@ public class GameLauncher : MonoBehaviour {
 			AIR_ENEMY_SPAWN_CHANCE = 0.12f;
 			MINE_SPAWN_CHANCE = 0.6f;
 			AIR_POWERUP_SPAWN_CHANCE = 0.22f;
-			GROUND_OBJECT_SPAWN_DISTANCE = 2.9f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
+			GROUND_OBJECT_SPAWN_DISTANCE = 4f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
 		
 			PLAYER_SIZE = 2.0f;
 			POWERUP_SIZE = 1.4f;
@@ -161,16 +161,16 @@ public class GameLauncher : MonoBehaviour {
 		//floors[0].transform.localScale = normalizeToSize(floor, 120.0f, 0.6f, 0.0f);
 		floors[0].transform.localScale = FloorScale(floors[0].GetComponent<SpriteRenderer>(), sg.TUTORIAL_FLOOR_LENGTH + 10);
 
-		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 2.0f, 0, 3), Quaternion.identity));
+		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 3.0f, 0, 3), Quaternion.identity));
 		groundEnemies[0].transform.localScale = ScaleToUnit (sg.GROUND_ENEMY_SIZE, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
 
-		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 1.5f,0,3), Quaternion.identity));
-		groundEnemies[0].transform.localScale = ScaleToUnit (sg.GROUND_ENEMY_SIZE, groundEnemies[0].GetComponent<SpriteRenderer> ().sprite);
+		groundEnemies.Add(Instantiate(groundEnemy, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 1.8f,0,3), Quaternion.identity));
+		groundEnemies[1].transform.localScale = ScaleToUnit (sg.GROUND_ENEMY_SIZE, groundEnemies[1].GetComponent<SpriteRenderer> ().sprite);
 
-		powerups.Add(Instantiate(powerup, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 1.2f, 0, 3), Quaternion.identity));
+		powerups.Add(Instantiate(powerup, new Vector3(sg.TUTORIAL_FLOOR_LENGTH / 1.3f, 0, 3), Quaternion.identity));
 		powerups[0].transform.localScale = ScaleToUnit (sg.POWERUP_SIZE, powerups [0].GetComponent<SpriteRenderer> ().sprite);
 
-		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (sg.TUTORIAL_FLOOR_LENGTH - 1, 0, 3), Quaternion.identity);
+		GameObject tutorialEndRamp = Instantiate (ramp, new Vector3 (sg.TUTORIAL_FLOOR_LENGTH - 2, 0, 3), Quaternion.identity);
 		tutorialEndRamp.transform.localScale = ScaleToUnit (sg.RAMP_SIZE, tutorialEndRamp.GetComponent<SpriteRenderer> ().sprite);
 		ramps.Add (tutorialEndRamp);
 
@@ -187,7 +187,7 @@ public class GameLauncher : MonoBehaviour {
 			// https://i.gyazo.com/956ebcd135567279bb4a00d01e312ca1.png
 			diff = (Random.value * 0.5f + 0.75f) * 
 				(8 + (Mathf.Pow(x, 0.71f) * 0.080f));
-			float angle = (Random.value - 0.47f) * (24 + diff) - 1.4f;
+			float angle = (Random.value - 0.47f) * (24 + diff) - 1.4f; // degrees
 
 			// Check if floor would be too high or low; reverse direction if so
 			if (y > 20 && angle >= 0)
@@ -200,45 +200,45 @@ public class GameLauncher : MonoBehaviour {
 
 			// Midair objects before the actual platform.
 			if (Random.value < sg.AIR_ENEMY_SPAWN_CHANCE) {
-				GameObject newAirEnemy = Instantiate (airEnemy, new Vector3 (x - 2, y + Random.Range (1, 6), 2), Quaternion.identity);
-				newAirEnemy.transform.localScale = ScaleToUnit (0.8f, newAirEnemy.GetComponent<SpriteRenderer> ().sprite);
+				GameObject newAirEnemy = Instantiate (airEnemy, new Vector3 (x - 2, y + Random.Range (0, 6), 2), Quaternion.identity);
+				newAirEnemy.transform.localScale = ScaleToUnit (sg.AIR_ENEMY_SIZE, newAirEnemy.GetComponent<SpriteRenderer> ().sprite);
 				airEnemies.Add(newAirEnemy);
 			}
 			if (Random.value < sg.MINE_SPAWN_CHANCE) {
-				GameObject newMine = Instantiate (mine, new Vector3 (x - 2, y + Random.Range (1, 6), 2), Quaternion.identity);
-				newMine.transform.localScale = ScaleToUnit (1.2f, newMine.GetComponent<SpriteRenderer> ().sprite);
+				GameObject newMine = Instantiate (mine, new Vector3 (x - 2, y + Random.Range (0, 6), 2), Quaternion.identity);
+				newMine.transform.localScale = ScaleToUnit (sg.MINE_SIZE, newMine.GetComponent<SpriteRenderer> ().sprite);
 				mines.Add(newMine);
 			}
 			if (Random.value < sg.AIR_POWERUP_SPAWN_CHANCE) {
-				GameObject newPowerup = Instantiate (powerup, new Vector3 (x - (1.5f * Random.Range(-2, 1)), y + Random.Range (3, 8), 2), Quaternion.identity);
-				newPowerup.transform.localScale = ScaleToUnit (1.2f, newPowerup.GetComponent<SpriteRenderer> ().sprite);
+				GameObject newPowerup = Instantiate (powerup, new Vector3 (x - (1.5f * Random.Range(-2.0f, 3.0f)), y + Random.Range (3, 8), 2), Quaternion.identity);
+				newPowerup.transform.localScale = ScaleToUnit (sg.POWERUP_SIZE, newPowerup.GetComponent<SpriteRenderer> ().sprite);
 				powerups.Add(newPowerup);
 			}
 
 			// Add the new floor.
 			floors.Add(Instantiate(floor, new Vector3(x, y, 3), Quaternion.identity));
-			float floorLen = (Random.value * 3.0f + 2.0f) / 3.5f * diff / 2 * sg.FLOOR_BASE_LENGTH; // This should scale by difficulty; increased game speed will compensate by reducing the time spent per platform.
+			float floorLen = (Random.value * 3.0f + 2.0f) * sg.FLOOR_BASE_LENGTH; // This should scale by difficulty; increased game speed will compensate by reducing the time spent per platform.
 			if (i != 0) {
 				//floors[i].transform.localScale = normalizeToSize(floor, floorLen, 0.6f, 0.0f);
-				floors [i].transform.localScale = FloorScale (floors [0].GetComponent<SpriteRenderer> (), floorLen);
+				floors [i].transform.localScale = FloorScale (floors [i].GetComponent<SpriteRenderer> (), floorLen);
 			}
 
 
 			// Place objects and enemies.
 			float leftEdge = x;
-			x += sg.GROUND_OBJECT_SPAWN_DISTANCE * 1.4f;
-			while (x < leftEdge + floorLen - 4) {
+			x += sg.GROUND_OBJECT_SPAWN_DISTANCE * 1.4f; // Don't spawn things right on the edge.
+			while (x < leftEdge + floorLen - sg.GROUND_OBJECT_SPAWN_DISTANCE * 1.4f) {
 				switch (Random.Range(0, 7)) {
 				case 0:
-				case 1:
 					GameObject newGroundEnemy = Instantiate (groundEnemy, new Vector3 (x, y, 2), Quaternion.identity);
 					newGroundEnemy.transform.localScale = ScaleToUnit (sg.GROUND_ENEMY_SIZE, newGroundEnemy.GetComponent<SpriteRenderer> ().sprite);
 					groundEnemies.Add (newGroundEnemy);
 					break;
+				case 1:
 				case 2:
 				case 3:
-					break; // generate nothing
 				case 4:
+					break; // generate nothing
 				case 5:
 					GameObject newPowerup = Instantiate (powerup, new Vector3 (x, y, 1), Quaternion.identity);
 					newPowerup.transform.localScale = ScaleToUnit (sg.POWERUP_SIZE, newPowerup.GetComponent<SpriteRenderer> ().sprite);
@@ -252,13 +252,13 @@ public class GameLauncher : MonoBehaviour {
 				}
 
 				// increment x
-				x += sg.GROUND_OBJECT_SPAWN_DISTANCE;
+				x += sg.GROUND_OBJECT_SPAWN_DISTANCE * Random.Range(0.7f, 1.42f);
 			}
 
 
 			// Some cleanup; shift indexes. x has been set to match the end of the platform.
 			i++;
-			x = leftEdge + floorLen - 0.8f;
+			x = leftEdge + floorLen - 1.6f;
 
 			// Finally place a ramp near the end.
 			//GameObject floorEndRamp = Instantiate (ramp, new Vector3 (x + Random.value * 0.8f, y, 3), Quaternion.identity);
