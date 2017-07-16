@@ -19,4 +19,16 @@ public class PlayerFeetChecker : MonoBehaviour {
 			playerAnimator.SetBool ("InAir", true);
 		}
 	}
+
+	public void OnTriggerEnter2D (Collider2D other){
+		if (other.CompareTag ("Ground")) {
+			player.PlayerLand ();
+		}
+	}
+
+	public void OnTriggerStay2D (Collider2D other){
+		if (other.CompareTag ("Ground") && player.GetAirState() == Player.AirState.air) {
+			player.PlayerLand ();
+		}
+	}
 }

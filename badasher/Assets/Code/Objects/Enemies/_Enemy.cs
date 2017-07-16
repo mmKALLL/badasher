@@ -26,6 +26,8 @@ public abstract class _Enemy : MonoBehaviour {
 	// default method for colliding with enemy
 	public void DamagePlayerDefault (Player player) {
 		player.TakeDamage(this.damage);
+		player.PlayerPauseMovement (0.5f);
+		Destroy (this.gameObject);
 	}
 
 

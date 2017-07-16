@@ -32,17 +32,18 @@ public class PlayerCollisions : MonoBehaviour {
 			}
 
 		} else if (other.CompareTag ("Ramp")) {
-			if ((player.GetAirState () == Player.AirState.ground) && (player.GetDashState () != Player.DashState.none)) {
+			if (/*(player.GetAirState () == Player.AirState.ground) &&*/ (player.GetDashState () != Player.DashState.none)) {
 				player.PlayerHitRamp ();
+				other.enabled = false;
 			}
 		} else if (other.CompareTag ("Powerup")) {
 			other.GetComponent<_Powerup> ().GainPowerup (player);
 		}
 	}
 
-	public void OnCollisionEnter2D (Collision2D other){
+	/*public void OnCollisionEnter2D (Collision2D other){
 		if (other.collider.CompareTag ("Ground") && player.GetAirState () == Player.AirState.air) {
 			player.PlayerLand ();
 		}
-	}
+	}*/
 }
