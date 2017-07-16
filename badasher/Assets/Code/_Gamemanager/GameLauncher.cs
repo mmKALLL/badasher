@@ -65,7 +65,7 @@ public class GameLauncher : MonoBehaviour {
 			AIR_ENEMY_SPAWN_CHANCE = 0.12f;
 			MINE_SPAWN_CHANCE = 0.6f;
 			AIR_POWERUP_SPAWN_CHANCE = 0.22f;
-			GROUND_OBJECT_SPAWN_DISTANCE = 4f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
+			GROUND_OBJECT_SPAWN_DISTANCE = 2.7f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
 		
 			PLAYER_SIZE = 2.0f;
 			POWERUP_SIZE = 1.4f;
@@ -182,7 +182,7 @@ public class GameLauncher : MonoBehaviour {
 		i = 0;
 
 		// Each loop generates a single floor tile. The while keeps generating them until the game's very end.
-		while (x < sg.GetGameLengthInScreens() * 80 - 200) {
+		while (x < sg.GetGameLengthInScreens() * sg.SCREEN_DEFAULT_LENGTH - 200) {
 			// Raise difficulty based on a reverse exponential function. Speed expected to increase (very) gradually as well.
 			// https://i.gyazo.com/956ebcd135567279bb4a00d01e312ca1.png
 			diff = (Random.value * 0.5f + 0.75f) * 
@@ -227,7 +227,7 @@ public class GameLauncher : MonoBehaviour {
 			// Place objects and enemies.
 			float leftEdge = x;
 			x += sg.GROUND_OBJECT_SPAWN_DISTANCE * 1.4f; // Don't spawn things right on the edge.
-			while (x < leftEdge + floorLen - sg.GROUND_OBJECT_SPAWN_DISTANCE * 1.4f) {
+			while (x < leftEdge + floorLen - 2) {
 				switch (Random.Range(0, 7)) {
 				case 0:
 					GameObject newGroundEnemy = Instantiate (groundEnemy, new Vector3 (x, y, 2), Quaternion.identity);
