@@ -62,11 +62,15 @@ public class GameLauncher : MonoBehaviour {
 	 * Each screen should be the size of one BG image, which are then looped to fill the stage.
 	 * Each stage may have differing properties.
 	 * 
-	 * Viewport size assumed to be around 50-70 units wide and 30 units tall. y = 0 is the middle part of stage height, and the game
-	 * starts from x = 0. The y value can be negative, but player should be killed at around y = -20. Camera should never reveal area
+	 * Viewport size assumed to be around 23-30 units wide and 15 units tall. y = 0 is the middle part of stage height, and the game
+	 * starts from x,y = (0,0). The y value can be negative, but player should be killed at around y = -17. Camera should never reveal area
 	 * below or above the background, which has y values in the range [-25, 25].
 	 * 
+	 * The player height is fixed to 2 units, so one player width is around 1.4 units.
 	 * 
+	 * Depth was used; player is at z = 0, pickups at z = 1, enemies at z = 2, ramps at z = 3, background at z = 20.
+	 * Possible particles should be placed in the foreground, at z = -1 for minor particles, z = -2 for major particles and
+	 * z = -3 for foreground supporting particles.
 	 * 
 	 */
 	public void GenerateStage(){
@@ -103,7 +107,10 @@ public class GameLauncher : MonoBehaviour {
 
 		// Initial start area
 		player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
-		player.transform.localScale = normalizeToSize(player, 2 * 360 / 572, 2, 0);
+		player.transform.localScale = normalizeToSize(player, 2 * 400 / 572, 2, 0);
+
+		floors.Add(Instantiate(floor, new Vector3(-10,-1,3), Quaternion.identity));
+		floors[0].transform.localScale = normalizeToSize(player, 2 * 400 / 572, 2, 0);
 
 		// Generate floors
 		int x = 0;
