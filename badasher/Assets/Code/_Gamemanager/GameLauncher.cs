@@ -66,10 +66,10 @@ public class GameLauncher : MonoBehaviour {
 			DEATH_ZONE_HEIGHT_FROM_BOTTOM = 7; // Unused apart from generation, for now.
 
 
-			AIR_ENEMY_SPAWN_CHANCE = 0.12f;
+			AIR_ENEMY_SPAWN_CHANCE = 0.16f;
 			MINE_SPAWN_CHANCE = 0.6f;
-			AIR_POWERUP_SPAWN_CHANCE = 0.22f;
-			GROUND_OBJECT_SPAWN_DISTANCE = 2.7f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
+			AIR_POWERUP_SPAWN_CHANCE = 0.15f;
+			GROUND_OBJECT_SPAWN_DISTANCE = 3.4f; // The smaller this is, the more objects (and challenge) you get. TODO: Could be scaled by difficulty?
 		
 			PLAYER_SIZE = 2.6f;
 			POWERUP_SIZE = 1.4f;
@@ -79,7 +79,7 @@ public class GameLauncher : MonoBehaviour {
 			RAMP_SIZE = 1.6f;
 			TUTORIAL_FLOOR_LENGTH = 60; // Length from 0,0
 			TUTORIAL_FLOOR_SHIFT = 10; // How much left to shift the floor from 0,0; total length is LENGTH + SHIFT.
-			FLOOR_BASE_LENGTH = 10; // Average length, some variation included.
+			FLOOR_BASE_LENGTH = 10; // Average length, some variation included. Might be multiplied by 2 or more.
 			FLOOR_BASE_HEIGHT = 0.6f; // Height of floors.
 		}
 	}
