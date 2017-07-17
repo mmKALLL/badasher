@@ -12,7 +12,7 @@ public class CameraScript : MonoBehaviour {
 
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent <Player> ();
-		offset = new Vector3 (8.5f, 1.0f, -10);
+		offset = new Vector3 (11.5f, 1.0f, -10);
 		camHorizontalExtent = this.GetComponent<Camera> ().orthographicSize;
 		this.GetComponent<AudioSource> ().Play ();
 
