@@ -22,6 +22,10 @@ public abstract class _Enemy : MonoBehaviour {
 	public void OnAirDashThrough (Player player){
 		DamagePlayerDefault(player);
 	}
+	virtual
+	public void OnBoostPowerThrough (Player player){
+		TakeDamageFromAttack (player);
+	}
 
 	// default method for colliding with enemy
 	public void DamagePlayerDefault (Player player) {

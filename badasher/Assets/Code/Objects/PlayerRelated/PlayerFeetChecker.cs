@@ -21,13 +21,13 @@ public class PlayerFeetChecker : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter2D (Collider2D other){
-		if (other.CompareTag ("Ground")) {
+		if (other.CompareTag ("Ground") && !player.IsJumpDashing()) {
 			player.PlayerLand ();
 		}
 	}
 
 	public void OnTriggerStay2D (Collider2D other){
-		if (other.CompareTag ("Ground") && player.GetAirState() == Player.AirState.air) {
+		if ((other.CompareTag ("Ground")) && (player.GetAirState() == Player.AirState.air) && (!player.IsJumpDashing())) {
 			player.PlayerLand ();
 		}
 	}

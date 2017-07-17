@@ -21,8 +21,9 @@ public static class CalculationLibrary {
 	// direction should be normalized
 	public static Vector3 CalculateDashJumpDir (float dashDistanceRemaining){
 		float distancePercentageLeft = 1-(PlayerConstants.DASH_DISTANCE - dashDistanceRemaining) / PlayerConstants.DASH_DISTANCE;
+		Debug.Log ("percentage " + distancePercentageLeft);
+		Debug.Log ("ddRemain " + dashDistanceRemaining);
 		distancePercentageLeft = Mathf.Max (Mathf.Min (1, distancePercentageLeft), 0);
-		Debug.Log ("percentage" + distancePercentageLeft);
 		float dirY = distancePercentageLeft *(-1 + 2*PlayerConstants.DIRECTION_PERCENTAGE_MAX) + (1-PlayerConstants.DIRECTION_PERCENTAGE_MAX);
 		float dirX = 1 - dirY;
 		Debug.Log(dirY+" + "+dirX);

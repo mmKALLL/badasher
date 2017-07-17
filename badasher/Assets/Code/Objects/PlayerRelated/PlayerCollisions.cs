@@ -25,6 +25,8 @@ public class PlayerCollisions : MonoBehaviour {
 			}
 			if (player.GetDashState () == Player.DashState.none) { // doesn't check for boost down the line, assumes that there are no other non-dash stuff in this enum
 				enemyScript.OnRunThrough (player);
+			} else if (player.GetDashState() == Player.DashState.boostPower) {
+				enemyScript.OnBoostPowerThrough (player);
 			} else if (player.GetAirState () == Player.AirState.air) {
 				enemyScript.OnAirDashThrough (player);
 			} else if (player.GetAirState () == Player.AirState.ground) {
@@ -32,9 +34,10 @@ public class PlayerCollisions : MonoBehaviour {
 			}
 
 		} else if (other.CompareTag ("Ramp")) {
-			if (/*(player.GetAirState () == Player.AirState.ground) &&*/ (player.GetDashState () != Player.DashState.none)) {
+			if ((!player.IsJumpDashing()) && (player.GetDashState () != Player.DashState.none)) {
+				Debug.Log ("HIT RAMP IN DASH!");
 				player.PlayerHitRamp ();
-				other.enabled = false;
+				//other.enabled = false;
 			}
 		} else if (other.CompareTag ("Powerup")) {
 			other.GetComponent<_Powerup> ().GainPowerup (player);

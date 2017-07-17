@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
 	private int boostPower;
 	private float dashCooldown; // use this for the UI element
 	private bool airdashAvailable = true;
-	private bool jumpDashing = true;
+	private bool jumpDashing = false;
 	public enum DashState {none, dash, boostPower}; // none = default run. DON'T ADD states that aren't a type of dash here.
 	public enum AirState {ground, air};
 	public enum LiveState {alive, invunerable, dead};
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour {
 		}
 
 		//Debug.Log (dashState + " + " + airState);
-		//Debug.Log(dashDistanceRemaining);
+		//Debug.Log("ddRemain " + dashDistanceRemaining);
 		if (!stopFixedUpdate) {
 			switch (dashState) {
 			case DashState.none: // basic run
@@ -150,11 +150,11 @@ public class Player : MonoBehaviour {
 		this.airState = AirState.ground;
 		playerAnimator.SetBool ("InAir", false);
 		this.airdashAvailable = true;
-		//playerRig.isKinematic = false;
-		playerRig.bodyType = RigidbodyType2D.Dynamic;
+		TurnKinematic ();
 	}
 
 	public void PlayerHitRamp (){
+		Debug.Log ("IN player hitting ramp");
 		this.jumpDashing = true;
 		this.airState = AirState.air;
 		playerAnimator.SetBool ("InAir",true);
@@ -165,8 +165,7 @@ public class Player : MonoBehaviour {
 		} else {
 			boostPowerBool = false;
 		}
-		playerRig.isKinematic = true;
-		playerRig.bodyType = RigidbodyType2D.Kinematic;
+		TurnKinematic ();
 		jumpPower = CalculationLibrary.CalculateDashJumpPower(dashDistanceRemaining, boostPowerBool);
 		dashDistanceRemaining += PlayerConstants.DASH_DISTANCE * PlayerConstants.JUMP_DASH_DASHDISTANCE_ADD_PERCENTAGE;
 	}
@@ -231,8 +230,10 @@ public class Player : MonoBehaviour {
 		if (this.liveState != LiveState.invunerable) {
 			boostPower -= damageAmount;
 			if (boostPower < 0) {
+				playerRig.velocity = Vector2.zero;
+				airdashAvailable = true;
 				if (this.transform.position.x < 800) {
-					this.transform.position = new Vector3 (0, 0, 0); // The clipping is intentional.
+					this.transform.position = new Vector3 (0, 1, 0); // The clipping is intentional.
 				} else {
 					this.transform.position = new Vector3 (800.0f * Mathf.Floor(this.transform.position.x / 800.0f), 30, 0); // The clipping is intentional?
 				}
@@ -265,5 +266,10 @@ public class Player : MonoBehaviour {
 		}
 		Debug.Log (dashCooldown);
 		yield return new WaitForEndOfFrame();
+	}
+
+	public void TurnKinematic(){
+		playerRig.bodyType = RigidbodyType2D.Kinematic;
+		playerRig.velocity = Vector2.zero;
 	}
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour {
 
 	private Player player;
+	float timeAtLastButtonPress;
 
 	//private float timeAtLastDash;
 	private Coroutine waitForInputsStorage;
@@ -21,18 +22,18 @@ public class InputHandler : MonoBehaviour {
 	private IEnumerator WaitForDashButtons (){ // main ienumerator
 		while (true){
 			yield return WaitForDashButton();
+			timeAtLastButtonPress = Time.realtimeSinceStartup;
 			if (player.IsJumpDashing ()) { // cancel jumpDash into AirDash
 				player.PlayerDash ();
-			} else if ((player.GetAirState() == Player.AirState.air) && (player.IsAirdashAvailable())) { // cancel falling into AirDash
+			} else if ((player.GetAirState () == Player.AirState.air) && (player.IsAirdashAvailable ())) { // cancel falling into AirDash
 				player.PlayerDash ();
 			} else if (player.GetDashState () == Player.DashState.dash) { // cancel dash to PowerBoost
 				player.PlayerBoostPower ();
 			} else if (player.GetDashCooldown () <= 0 && (player.GetDashState () != Player.DashState.boostPower)) { // do dash when no cooldown left and not in boostPower
 				player.PlayerDash ();
-			} else {
-				Debug.Log ("Cannot dash in BoostPower!");
+			} else if (player.GetDashState () != Player.DashState.boostPower && (Time.realtimeSinceStartup - timeAtLastButtonPress) < PlayerConstants.BOOST_POWER_INPUT_BUFFER) {
+				player.PlayerBoostPower ();
 			}
-			//timeAtLastDash = Time.realtimeSinceStartup;
 		}
 	}
 

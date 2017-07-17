@@ -175,7 +175,7 @@ public class GameLauncher : MonoBehaviour {
 
 		// Initial start area, which is a tutorial of sorts.
 
-		player = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
+		player = Instantiate(playerPrefab, new Vector3(0,1,0), Quaternion.identity);
 		//player.transform.localScale = normalizeToSize(player, 2 * 400 / 572, 2, 0);
 		player.transform.localScale = ScaleToUnit (sg.PLAYER_SIZE, player.GetComponent<SpriteRenderer>().sprite);
 

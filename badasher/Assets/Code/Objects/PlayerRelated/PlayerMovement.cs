@@ -43,6 +43,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (moveAmount > player.dashDistanceRemaining) {
 			moveAmount = player.dashDistanceRemaining;
 		}
+		Debug.Log ("dir " + dir.x +"+"+ dir.y);
 		playerRig.MovePosition(transform.position + dir * (moveAmount));
 		dashDistanceRemaining = player.dashDistanceRemaining-moveAmount;
 	}
@@ -56,7 +57,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void PlayerFall (Player player, Rigidbody2D playerRig){
-		playerRig.isKinematic = false;
+		playerRig.bodyType = RigidbodyType2D.Dynamic;
 		// nothing, let the gravity do its work.
 	}
 
