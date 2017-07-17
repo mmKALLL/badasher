@@ -14,6 +14,9 @@ You can double tap to boost your dash.
 ### Credits:
 
 mmKALLL - Management, Coordination, Design, Programming  
+
 Elda - Programming, Design, Testing  
+
 ultineet - Graphics  
+
 Novi - Music and SFX
