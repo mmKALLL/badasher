@@ -193,6 +193,9 @@ public class Player : MonoBehaviour {
 
 	public void PlayerBoostPower (){
 		if (SpendBoostPower()) {
+			if (airState == AirState.air && !airdashAvailable) {
+				airdashAvailable = true;
+			}
 			Debug.Log ("BoostPowerDash");
 			this.dashCooldown = 0;
 			this.jumpDashing = false;
