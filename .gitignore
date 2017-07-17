@@ -11,6 +11,7 @@ badasher/Build
 badasher/Library/*
 badasher/sysinfo.txt
 badasher/*.stackdump
+badasher/badasher_Data/output_log.txt
 Temp/
 Obj/
 Build
