@@ -4,19 +4,16 @@ An arcade-style platformer made for the Game Maker's Toolkit Jam over a period o
 
 badasher was developed using Unity.
 
-## Controls:
+### Controls:
 
-D - Dash.
-Space - Dash.
-Right Arrow - Dash.
+D - Dash.  
+Space - Dash.  
+Right Arrow - Dash.  
 You can double tap to boost your dash.
 
-## Credits:
+### Credits:
 
-mmKALLL - Management, Coordination, Design, Programming
-
-Elda - Programming, Design, Testing
-
-ultineet - Graphics
-
+mmKALLL - Management, Coordination, Design, Programming  
+Elda - Programming, Design, Testing  
+ultineet - Graphics  
 Novi - Music and SFX
