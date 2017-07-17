@@ -37,9 +37,11 @@ public class InputHandler : MonoBehaviour {
 	}
 
 	private IEnumerator WaitForDashButton (){
-		while (!Input.GetKeyDown (KeyCode.D) && !Input.GetKeyDown (KeyCode.Space) && !Input.GetKeyDown (KeyCode.RightArrow)) {
+		while (!Input.GetKeyDown (KeyCode.D) && !Input.GetKeyDown (KeyCode.Space) && !Input.GetKeyDown (KeyCode.RightArrow) && !Input.GetKeyDown (KeyCode.Escape)) {
 			yield return null;
 		}
+		if (Input.GetKeyDown (KeyCode.Escape))
+			Application.Quit();
 		Debug.Log ("KEY GOT!");
 		yield return new WaitForFixedUpdate ();
 	}
