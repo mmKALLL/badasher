@@ -29,7 +29,7 @@ public class InputHandler : MonoBehaviour {
 				player.PlayerDash ();
 			} else if (player.GetDashState () == Player.DashState.dash) { // cancel dash to PowerBoost
 				player.PlayerBoostPower ();
-			} else if (player.GetDashCooldown () <= 0 && (player.GetDashState () != Player.DashState.boostPower)) { // do dash when no cooldown left and not in boostPower
+			} else if (player.GetDashCooldown () <= 0 && (player.GetDashState () != Player.DashState.boostPower) && player.GetAirState() == Player.AirState.ground) { // do dash when no cooldown left and not in boostPower
 				player.PlayerDash ();
 			} else if (player.GetDashState () != Player.DashState.boostPower && (Time.realtimeSinceStartup - timeAtLastButtonPress) < PlayerConstants.BOOST_POWER_INPUT_BUFFER) {
 				player.PlayerBoostPower ();

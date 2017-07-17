@@ -155,6 +155,7 @@ public class Player : MonoBehaviour {
 
 	public void PlayerHitRamp (){
 		Debug.Log ("IN player hitting ramp");
+		ResetAirdash ();
 		this.jumpDashing = true;
 		this.airState = AirState.air;
 		playerAnimator.SetBool ("InAir",true);
@@ -193,9 +194,7 @@ public class Player : MonoBehaviour {
 
 	public void PlayerBoostPower (){
 		if (SpendBoostPower()) {
-			if (airState == AirState.air && !airdashAvailable) {
-				airdashAvailable = true;
-			}
+			ResetAirdash ();
 			Debug.Log ("BoostPowerDash");
 			this.dashCooldown = 0;
 			this.jumpDashing = false;
@@ -234,6 +233,8 @@ public class Player : MonoBehaviour {
 			boostPower -= damageAmount;
 			if (boostPower < 0) {
 				playerRig.velocity = Vector2.zero;
+				dashState = DashState.none;
+				airState = AirState.air;
 				airdashAvailable = true;
 				if (this.transform.position.x < 800) {
 					this.transform.position = new Vector3 (0, 1, 0); // The clipping is intentional.
@@ -274,5 +275,9 @@ public class Player : MonoBehaviour {
 	public void TurnKinematic(){
 		playerRig.bodyType = RigidbodyType2D.Kinematic;
 		playerRig.velocity = Vector2.zero;
+	}
+
+	private void ResetAirdash(){
+		airdashAvailable = true;
 	}
 }
