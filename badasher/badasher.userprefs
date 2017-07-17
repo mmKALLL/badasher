@@ -1,23 +1,24 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\_Gamemanager\GameLauncher.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Objects\PlayerRelated\Player.cs">
     <Files>
       <File FileName="Assets\Code\Objects\Enemies\Enemy_Basic.cs" Line="1" Column="1" />
       <File FileName="Assets\Code\Objects\Enemies\Enemy_Run.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\Player.cs" Line="237" Column="142" />
       <File FileName="Assets\Code\Objects\PlayerRelated\PlayerCollisions.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\_Gamemanager\InputHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Objects\PlayerRelated\PlayerMovement.cs" Line="58" Column="24" />
+      <File FileName="Assets\Code\_Gamemanager\InputHandler.cs" Line="40" Column="120" />
       <File FileName="Assets\Code\LogicLibrary\CalculationLibrary.cs" Line="1" Column="1" />
       <File FileName="Assets\Code\Objects\Enemies\_Enemy.cs" Line="1" Column="1" />
       <File FileName="Assets\Code\_Gamemanager\MenuManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\_Gamemanager\GameLauncher.cs" Line="137" Column="72" />
+      <File FileName="Assets\Code\_Gamemanager\GameLauncher.cs" Line="82" Column="105" />
       <File FileName="Assets\Code\Objects\Powerups\Powerup_Boost.cs" Line="1" Column="1" />
       <File FileName="Assets\Code\Objects\Powerups\_Powerup.cs" Line="1" Column="1" />
       <File FileName="Assets\Code\Objects\UI\UI_AirDashIndicator.cs" Line="1" Column="1" />
       <File FileName="Assets\Code\Objects\UI\UI_BoostPowerBar.cs" Line="1" Column="1" />
       <File FileName="Assets\Code\Objects\UI\UI_DashCooldown.cs" Line="1" Column="1" />
       <File FileName="Assets\Code\Objects\PlayerRelated\PlayerConstants.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\_Gamemanager\CameraScript.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -25,12 +26,11 @@
           <Node name="badasher" expanded="True">
             <Node name="Assembly-CSharp" expanded="True">
               <Node name="Code" expanded="True">
-                <Node name="_Gamemanager" expanded="True">
-                  <Node name="GameLauncher.cs" selected="True" />
-                </Node>
+                <Node name="_Gamemanager" expanded="True" />
                 <Node name="Objects" expanded="True">
-                  <Node name="Enemies" expanded="True" />
-                  <Node name="PlayerRelated" expanded="True" />
+                  <Node name="PlayerRelated" expanded="True">
+                    <Node name="Player.cs" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>

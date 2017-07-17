@@ -86,6 +86,12 @@ public class Player : MonoBehaviour {
 
 	#region fixedUpdate
 	public void FixedUpdate(){
+
+		// TODO Hacked together something that checks if dead.
+		if (this.transform.position.y < -25 + 7) {
+			this.TakeDamage(9999);
+		}
+
 		//Debug.Log (dashState + " + " + airState);
 		//Debug.Log(dashDistanceRemaining);
 		if (!stopFixedUpdate) {
@@ -225,8 +231,14 @@ public class Player : MonoBehaviour {
 		if (this.liveState != LiveState.invunerable) {
 			boostPower -= damageAmount;
 			if (boostPower < 0) {
-				this.liveState = LiveState.dead;
-				SceneManager.LoadScene (1);
+				if (this.transform.position.x < 800) {
+					this.transform.position = new Vector3 (0, 0, 0); // The clipping is intentional.
+				} else {
+					this.transform.position = new Vector3 (800.0f * Mathf.Floor(this.transform.position.x / 800.0f), 30, 0); // The clipping is intentional?
+				}
+				this.boostPower = PlayerConstants.BOOST_POWER_DEFAULT;
+				//this.liveState = LiveState.dead;
+				//SceneManager.LoadScene (0); // TODO FIXME Change this to another scene.
 			}
 		}
 	}
