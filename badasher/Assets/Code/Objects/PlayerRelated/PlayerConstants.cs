@@ -23,7 +23,7 @@ public static class PlayerConstants {
 	public const float DASH_SLOWDOWN_END_PERCENTEGE = 0.1f;
 	public const float DASH_SLOWDOWN_END_MODIFIER = 1.5f;
 
-	public const float BOOST_POWER_INPUT_BUFFER = 0.8f; // in seconds // TODO unused...
+	public const float BOOST_POWER_INPUT_BUFFER = 0.2f; // in seconds
 
 
 	public const int ENEMY_BP_DAMAGE = 30; // out of Boost Power Max
