@@ -8,17 +8,19 @@ badasher/*.stackdump
 badasher/Temp/
 badasher/Obj/
 badasher/Build
-badasher/Library/*
+badasher/Library/
 badasher/sysinfo.txt
 badasher/*.stackdump
 Temp/
 Obj/
-Build
+Build/
 Library/
-[.]*/Library/*
+Temp/*
+Obj/*
+Build/*
+Library/*
 sysinfo.txt
 *.stackdump
-badasher/badasher.userprefs
 
 # Visual Studio generated
 [Ee]xported[Oo]bj/
