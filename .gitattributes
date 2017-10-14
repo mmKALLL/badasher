@@ -1,0 +1,3 @@
+# Ignore the linguist mode for aspx files.
+# Helps with GitHub language recognition.
+*/DefaultWsdlHelpGenerator.aspx linguist-generated=true
